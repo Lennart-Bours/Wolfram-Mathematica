@@ -117,9 +117,9 @@ rectCoefficientRelative::usage = "rectCoefficientRelative[f[..., T1, T2,...],T1,
 Begin["`Private`"]
 
 
-delta=Interpolation[Import["G:\\My Drive\\PhD Pisa\\Calculations, Data and Designs\\Wolfram Mathematica\\Auxi\\gapnew.dat","Table"]];
+delta=Interpolation[Import[NotebookDirectory[]<>"gapnew.dat","Table"]];
 
-QephAl=Interpolation[Import["G:\\My Drive\\PhD Pisa\\Calculations, Data and Designs\\Wolfram Mathematica\\Auxi\\SuperElectronPhonon_Tc1.3K_gamma5x10^-4_Tbath25mK_mod.dat","Table"],InterpolationOrder ->1];
+QephAl=Interpolation[Import[NotebookDirectory[]<>"SuperElectronPhonon_Tc1.3K_gamma5x10^-4_Tbath25mK_mod.dat","Table"],InterpolationOrder ->1];
 
 
 \[CapitalDelta]0;
@@ -292,6 +292,7 @@ prefactor*NIntegrate[ energy^2  * energy (*Graphene dos*) * \[Rho]TJJ[energy,flu
 (*  Following the definition from doi:10.1038/nnano.2015.11, with Subscript[J, forward] corresponding to a hot normal metal probe. RTunnelProbe cancels out *)
 
 
+(* ::Input::Initialization:: *)
 rectificationCoefficient[flux_,TCold_,THot_,L_,\[Phi]0_:0] := -JNProbe[flux,TCold,THot,L,\[Phi]0]/JNProbe[flux,THot,TCold,L,\[Phi]0]
 
 
