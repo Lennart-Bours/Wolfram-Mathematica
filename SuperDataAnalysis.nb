@@ -1,0 +1,2359 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     93981,       2351]
+NotebookOptionsPosition[     87924,       2152]
+NotebookOutlinePosition[     88368,       2170]
+CellTagsIndexPosition[     88325,       2167]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SuperDataAnalysis.m package", "Title",
+ InitializationCell->True,
+ TextAlignment->Center],
+
+Cell[CellGroupData[{
+
+Cell["Notes", "Section",
+ InitializationCell->True,
+ CellChangeTimes->{{3.733564463986932*^9, 3.7335644644172044`*^9}}],
+
+Cell["\<\
+To use this package, execute: Get[\[OpenCurlyDoubleQuote]G:\\\\My \
+Drive\\\\PhD Pisa\\\\Calculations, Data and Designs\\\\Wolfram \
+Mathematica\\\\SuperDataAnalysis.m\[CloseCurlyDoubleQuote]] (or whereever the \
+package is saved).
+To see a list of all the defined functions execute: Names[\
+\[OpenCurlyDoubleQuote]SuperDataAnalysis`*\[CloseCurlyDoubleQuote]]
+Global variables are indicated with the $ sign.
+$data is the $loadedFile without the first row, which contains the column name
+$loadedFileName is the original file name without the (.dat) extension
+In SWL column 
+1 -> sweep 1 changed value
+3 -> sweep 1 and 2 changed value
+7 -> sweep 1, 2 and 3 changed value
+15 -> sweep 1, 2, 3 and 4 changed value\
+\>", "Text",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7335644751624804`*^9, 3.733564495496433*^9}, {
+   3.733572560436421*^9, 3.733572580717151*^9}, {3.7367478004068813`*^9, 
+   3.7367478149584017`*^9}, {3.7471350352355976`*^9, 
+   3.7471350461389804`*^9}, {3.7632095922160053`*^9, 
+   3.7632095932626467`*^9}, {3.763356170480796*^9, 3.763356246302804*^9}, {
+   3.7633563967510853`*^9, 3.7633564134218764`*^9}, {3.7633717053970556`*^9, 
+   3.763371726775635*^9}, {3.768563841502095*^9, 3.768563854166749*^9}, {
+   3.7685644737075043`*^9, 3.768564482581391*^9}, 3.770007234397442*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Begin the package", "Section",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"BeginPackage", "[", "\"\<SuperDataAnalysis`\>\"", "]"}]], "Code"],
+
+Cell[CellGroupData[{
+
+Cell["Global variables", "Subsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.6967715725332775`*^9, 3.6967715851588287`*^9}, {
+  3.733486190798023*^9, 3.7334861921765556`*^9}, {3.7632095830745935`*^9, 
+  3.76320958407437*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"Protect", "[", 
+    RowBox[{
+    "$workingDirectory", ",", "$loadedFile", ",", "$loadedFilePath", ",", 
+     "$data", ",", "$loadedFileName", ",", "$s1Length", ",", " ", "$s1Values",
+      ",", "$s2Length", ",", "$s2Values", ",", "$s3Length", ",", "$s3Values", 
+     ",", " ", "$s4Length", ",", "$s4Values"}], "]"}], ";"}], 
+  "\[IndentingNewLine]"}]], "Code",
+ CellChangeTimes->{{3.6967726115044107`*^9, 3.696772618882016*^9}, {
+   3.6987471208180637`*^9, 3.698747193645127*^9}, {3.699943641239854*^9, 
+   3.6999436588088446`*^9}, {3.7190418703426313`*^9, 3.719041888854499*^9}, {
+   3.7193009530818105`*^9, 3.719300953650134*^9}, {3.7193168985001755`*^9, 
+   3.7193169581735306`*^9}, 3.7198118341622276`*^9, {3.720852270243249*^9, 
+   3.720852282230795*^9}, {3.7334839388454895`*^9, 3.733483941044939*^9}, {
+   3.7334862065964746`*^9, 3.733486227432927*^9}, {3.733808966105133*^9, 
+   3.733808967752083*^9}, {3.736683786050581*^9, 3.736683896562726*^9}, 
+   3.7366841564833307`*^9, {3.7366850158997145`*^9, 3.7366850299548845`*^9}, 
+   3.7479824033073835`*^9, {3.763209609497352*^9, 3.7632096583020067`*^9}, {
+   3.7633561148971457`*^9, 3.7633561561225333`*^9}, {3.763356355168457*^9, 
+   3.763356356105747*^9}, {3.7685641863650913`*^9, 3.768564228754546*^9}, {
+   3.7719107605976534`*^9, 3.77191076426726*^9}, {3.7771102081319585`*^9, 
+   3.777110210649747*^9}, {3.777110244707436*^9, 3.777110248319383*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Usage messages for the public functions", "Subsection",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"MyFunction", "::", "usage"}], "MessageName"], "=", 
+   "\"\<MyFunction[x] is a function that does something.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True],
+
+Cell[CellGroupData[{
+
+Cell["Loading a file and file properties", "Subsubsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633571307416706`*^9, 3.763357137977336*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"SetWorkingDirectory", "::", "usage"}], "=", 
+    "\[IndentingNewLine]", 
+    "\"\<Set the working directory, which will be openeded when calling \
+LoadGlobalFile.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"LoadGlobalFile", "::", "usage"}], "MessageName"], "=", 
+   "\"\<LoadGlobalFile[]\\n Loads a file, sets the global variables \
+loadedFile, $loadedFilePath, $data, $loadedFileName, and extracts the number \
+of sweeps and associated sweep variables.\>\""}], ";"}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633571513105397`*^9, 3.763357188429681*^9}, {
+   3.763357331357455*^9, 3.763357331466833*^9}, {3.7633575547752876`*^9, 
+   3.763357580391819*^9}, 3.763371551569691*^9, {3.7771103688295274`*^9, 
+   3.777110400296713*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"FindPartitionLength2Sweeps", "::", "usage"}], "MessageName"], 
+   "=", "\"\<FindPartitionLength2Sweeps[SWLColumnNumber_:3,SWLNumber_:3] \\n \
+Looks for the appearance of SWLNumber in SWLColumn to determine the length of \
+the smaller of two sweeps.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633572197766047`*^9, 3.7633573281530843`*^9}, 
+   3.7633715549927807`*^9, {3.768564870341627*^9, 3.7685649097342997`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"FindPartitionLength3Sweeps", "::", "usage"}], "MessageName"], 
+   "=", "\"\<FindPartitionLength3Sweeps[SWLColumnNumber_:4,SWLNumber1_:3,\
+SWLNumber2_:7]\\n Like FindPartitionLength2Sweeps, expect this function looks \
+for two SWLNumbers, to find the length of the innermost sweep when using \
+three sweeps.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763357306090198*^9, 3.7633573719494586`*^9}, {
+   3.7685648703545675`*^9, 3.768564870360552*^9}, 3.768564910478658*^9, {
+   3.7685649435099697`*^9, 3.7685649442139835`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"FindPartitionLength4Sweeps", "::", "usage"}], "MessageName"], 
+   "=", "\"\<FindPartitionLength4Sweeps[SWLColumnNumber_:5,SWLNumber1_:3,\
+SWLNumber2_:7,SWLNumber3_:15]\\n Like FindPartitionLength2Sweeps, expect this \
+function looks for three SWLNumbers, to find the length of the innermost \
+sweep when using four sweeps.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768564745574066*^9, 3.7685647640818987`*^9}, {
+   3.768564800579525*^9, 3.7685648011540184`*^9}, {3.7685648703775043`*^9, 
+   3.768564870384523*^9}, 3.768564911813651*^9, {3.7685649451262035`*^9, 
+   3.768564978531719*^9}, 3.768565409507249*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Generic functions for manipulating data", "Subsubsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633715172519655`*^9, 3.7633715231113973`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"TakeColumn", "::", "usage"}], "MessageName"], "=", 
+   "\"\<TakeColumn[data_List:$data,column_Integer]\\n Extracts the indicated \
+column from a two dimensional matrix and returns it as a list with depth one. \
+If no data argument is passed, it takes from the global $data.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763371535693287*^9, 3.7633715427095995`*^9}, {
+  3.763371577182075*^9, 3.7633716467748003`*^9}, {3.7633719346608067`*^9, 
+  3.7633719379100823`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S2Split", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S2Split[list_List]\\n Splits the input list into seperate lists, each \
+with length $S1Length (one value of S2)\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.763371952069848*^9, {3.7633720608541756`*^9, 3.763372112004981*^9}, {
+   3.763373500183118*^9, 3.7633735247753735`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S2SplitPart", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S3Split[list_List, n_Integer]\\n Returnes the nth part (S2 value) of \
+the S2Split, with n = 1 corresponding to the first part.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763373747825947*^9, 3.7633737862308025`*^9}, {
+  3.7685662535967264`*^9, 3.768566253770014*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S3Split", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S3Split[list_List]\\n Splits the input list into seperate lists, each \
+with length $S1Length * S2Length (one value of S3)\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633734668424826`*^9, 3.7633735173420753`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S3SplitPart", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S3Split[list_List, n_Integerta]\\n Returnes the nth part (S3 value) \
+of the S3Split, with n = 1 corresponding to the first part.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763373646387457*^9, 3.7633737374336977`*^9}, {
+   3.7685662546029673`*^9, 3.768566254778494*^9}, 3.7687101626307187`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S3S2Split", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S3S2Split[list_List]\\n first applies S3Split, and then S2Split, thus \
+returning a list of depth 3.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633735508411436`*^9, 3.7633736160586967`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S4Split", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S4Split[list_List]\\n Splits the input list into seperate lists, each \
+with length $S1Length * $s2Length * $s3Length (one value of S4)\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.763371952069848*^9, {3.7633720608541756`*^9, 3.763372112004981*^9}, {
+   3.763373500183118*^9, 3.7633735247753735`*^9}, {3.7685661670808*^9, 
+   3.7685662062242837`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S4SplitPart", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S3Split[list_List, n_Integer]\\n Returnes the nth part (S4 value) of \
+the S4Split, with n = 1 corresponding to the first part.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763373747825947*^9, 3.7633737862308025`*^9}, {
+  3.7685661701289263`*^9, 3.7685661702077117`*^9}, {3.7685662207095757`*^9, 
+  3.7685662287581663`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   StyleBox[
+    RowBox[{"S4S3Split", "::", "usage"}], "MessageName"], "=", 
+   "\"\<S4S3Split[list_List]\\n first applies S4Split, and then S3Split, thus \
+returning a list of depth 3.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7685664424080076`*^9, 3.7685664540276356`*^9}, {
+  3.76856661251236*^9, 3.7685666186628942`*^9}, {3.770007530215535*^9, 
+  3.7700075303873444`*^9}, {3.7703727055044403`*^9, 3.770372706207365*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"S4S3S2Split", "::", "usage"}], " ", "=", " ", 
+   "\"\<S4S3S2Split[list_List]\\n first applies S4Split, then S3Split, then \
+S2Split, thus returning a list of depth 4.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7700082054269414`*^9, 3.7700082245411377`*^9}, {
+  3.7700085129213247`*^9, 3.7700085467091093`*^9}, {3.7703727008877363`*^9, 
+  3.7703727025510635`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Finding the switchting point", "Subsubsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7700067269887943`*^9, 3.7700067316770525`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSwitch", "::", "usage"}], " ", "=", " ", 
+   "\"\<FindSwitch[sign_Integer : 1, \
+data_List,fallBackValue_:-1]\\nFindSwitch[ sign_Integer : 1, \
+value_List,data_List,treshold_,fallBackValue_:-1]\\n FindSwitch looks at the \
+difference between two adjacent data points, and tracks the largest value, \
+which might work poorly when the data is noisy. The sign of the jump is \
+determined by sign_Integer, which is 1 by default (positive jump). When the \
+largest difference is smaller than the treshold value, the fallBackValue is \
+returned. There are two versions of the FindSwitch function. If only a data \
+list is given, the function returns the index of the data point where the \
+jump occurs. If also a corresponding value list is supplied, a list of lenght \
+two is returned, where the first element is the index of the point where the \
+jump occurs, and the second element is the cossesponding value.\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.770006740661186*^9, 3.770006802573186*^9}, {
+   3.770006872751546*^9, 3.770006873048343*^9}, 3.770007094153081*^9, 
+   3.7735691602995415`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShowSwitch", "::", "usage"}], " ", "=", " ", 
+   "\"\<ShowSwitch[ sign_Integer : 1,data_List,treshold_,fallBackValue_: \
+-1]\\nShowSwitch[ sign_Integer : \
+1,value_List,data_List,treshold_,fallBackValue_: -1]\\n ShowSwitch uses \
+FindSwitch to detect a jump, and then plots the data with a point that \
+indicates the detected jump point.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7700068334426317`*^9, 3.7700068653877673`*^9}, {
+  3.770006898316038*^9, 3.7700068998312984`*^9}, {3.77000709674617*^9, 
+  3.7700071001224732`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSwitchArray", "::", "usage"}], " ", "=", " ", 
+   "\"\<FindSwitchArray[ sign_Integer: \
+1,data_List,treshold_Real,fallBackValue_Integer :-1]\\nFindSwitchArray[ \
+sign_Integer: 1,value_List,data_List,treshold_Real,fallBackValue_Integer :-1]\
+\\n FindSwitchArray aapplies FindSwitch to a list of lists\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.770006919100709*^9, 3.77000695936047*^9}, 
+   3.770007102655691*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShowSwitchArray", "::", "usage"}], " ", "=", " ", 
+   "\"\<ShowSwitchArray[ sign_Integer: \
+1,data_List,treshold_Real,fallBackValue_Integer :-1]\\nShowSwitchArray[ \
+sign_Integer: 1,value_List,data_List,treshold_Real,fallBackValue_Integer :-1]\
+\\n ShowSwitchArray aapplies FindSwitch to a list of lists\>\""}], 
+  ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.770006969425145*^9, 3.7700069772883687`*^9}, 
+   3.7700071043888893`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSlope", "::", "usage"}], " ", "=", " ", 
+   "\"\<FindSlope[sign_Integer : 1, \
+data_List,threshold_Real,pointsToAverage_Integer : \
+3,fallBackValue_:0]\\nFindSwitch[sign_Integer : 1, value_List,data_List, \
+pointsToAverage_Integer : 3,treshold_Real,fallBackValue_:-1]\\n FindSlope \
+applies a moving average, then takes the differnce between subsequent points, \
+and finds the first point (difference) larger than the treshold value. The \
+sign of the slope is determined by sign_Integer, which is 1 by default \
+(positive). When the largest difference is smaller than the treshold value, \
+the fallBackValue is returned. There are two versions of the FindSwitch \
+function. If only a data list is given, the function returns the index of the \
+data point where the jump occurs. If also a corresponding value list is \
+supplied, a list of lenght two is returned, where the first element is the \
+index of the point where the jump occurs, and the second element is the \
+cossesponding value.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.773569168854392*^9, 3.773569289215579*^9}, {
+   3.7735693572979097`*^9, 3.7735693890809937`*^9}, 3.8151299457204795`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShowFindSlope", "::", "usage"}], " ", "=", " ", 
+   "\"\<ShowFindSlope[sign_Integer : \
+1,data_List,treshold_Real,pointsToAverage_Integer : 3,fallBackValue_: \
+0]\\nShowSwitch[ sign_Integer : \
+1,value_List,data_List,treshold_Real,pointsToAverage_Integer : \
+3,fallBackValue_: -1]\\n ShowFindSlope uses FindSlope to detect a slope, and \
+then plots the data with a point that indicates the detected critical \
+point.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7735693165663824`*^9, 3.773569350422024*^9}, {
+   3.773569400300912*^9, 3.773569405662816*^9}, 3.815129951191725*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"DebugFindSlope", "::", "usage"}], " ", "=", " ", 
+   "\"\<DebugFindSlope[sign_Integer : \
+1,data_List,treshold_Real,pointsToAverage_Integer : 3,fallBackValue_: \
+0]\\nShowSwitch[ sign_Integer : \
+1,value_List,data_List,treshold_Real,pointsToAverage_Integer : \
+3,fallBackValue_: -1]\\n ShowFindSlope uses FindSlope to detect a slope, and \
+then plots the data with a point that indicates the detected critical point. \
+Also plots the smoothed, step-wise derived function.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.773575478687116*^9, 3.773575483454111*^9}, {
+   3.773575514533134*^9, 3.773575525811795*^9}, 3.77357561385837*^9, 
+   3.815129953529041*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSlopeArray", "::", "usage"}], " ", "=", " ", 
+   "\"\<FindSlopeArray[sign_Integer : \
+1,data_List,treshold_Real,pointsToAverage_Integer : 3,fallBackValue_: \
+0]\\nFindSlopeArray[ sign_Integer : \
+1,value_List,data_List,treshold_Real,pointsToAverage_Integer : \
+3,fallBackValue_: -1]\\n FindSlopeArray uses FindSlope to detect a slope, \
+works on a list of lists.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7735755335786033`*^9, 3.773575537878065*^9}, {
+   3.7735755985671263`*^9, 3.773575611976186*^9}, 3.815129955149315*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShowFindSlopeArray", "::", "usage"}], " ", "=", " ", 
+   "\"\<FindSlopeArray[sign_Integer : \
+1,data_List,treshold_Real,pointsToAverage_Integer : 3,fallBackValue_: \
+0]\\nFindSlopeArray[ sign_Integer : \
+1,value_List,data_List,treshold_Real,pointsToAverage_Integer : \
+3,fallBackValue_: -1]\\n FindSlopeArray uses FindSlope to detect a slope and \
+also plots the data with the selected point indicated, works on a list of \
+lists.\>\""}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7735755433640256`*^9, 3.773575629955163*^9}, 
+   3.773575954980316*^9, 3.815129956985643*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Begin the `Private context", "Section",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}]], "Code"],
+
+Cell[CellGroupData[{
+
+Cell["Loading a file and file properties", "Subsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633566150144362`*^9, 3.7633566241765785`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"SetWorkingDirectory", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", "$workingDirectory", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$workingDirectory", "=", 
+      RowBox[{"SystemDialogInput", "[", 
+       RowBox[{
+       "\"\<Directory\>\"", ",", 
+        "\"\<G:\\\\My Drive\\\\PhD Pisa\\\\Calculations, Data and \
+Designs\\\\Measurements\>\""}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Protect", "[", "$workingDirectory", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{
+      "\"\<Working directory set to: \>\"", "<>", "$workingDirectory"}], 
+      "]"}]}]}], "\[IndentingNewLine]", "]"}]}]], "Input",
+ CellChangeTimes->{{3.7771102269055843`*^9, 3.7771103081390924`*^9}, {
+  3.779684439847536*^9, 3.779684455481262*^9}, {3.7806487129156675`*^9, 
+  3.780648752901261*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"LoadGlobalFile", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s2Length", ",", "$s2Values", ",", "$s3Length", ",", 
+       "$s3Values", ",", "$s4Length", ",", "$s4Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Clear", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s2Length", ",", "$s2Values", ",", "$s3Length", ",", 
+       "$s3Values", ",", "$s4Length", ",", "$s4Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Protect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s2Length", ",", "$s2Values", ",", "$s3Length", ",", 
+       "$s3Values", ",", "$s4Length", ",", "$s4Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$loadedFile", ",", "$loadedFilePath", ",", "$data", ",", 
+       "$loadedFileName"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$loadedFilePath", " ", "=", " ", 
+      RowBox[{"SystemDialogInput", "[", 
+       RowBox[{"\"\<FileOpen\>\"", ",", "$workingDirectory"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$loadedFile", " ", "=", 
+      RowBox[{"Import", "[", 
+       RowBox[{"$loadedFilePath", ",", " ", "\"\<Table\>\""}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$loadedFileName", " ", "=", " ", 
+      RowBox[{"FileBaseName", "[", 
+       RowBox[{"FileNameTake", "[", "$loadedFilePath", "]"}], "]"}]}], " ", 
+     ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<Directory = \>\"", ",", 
+       RowBox[{"SetDirectory", "[", 
+        RowBox[{"DirectoryName", "[", "$loadedFilePath", "]"}], "]"}], ",", 
+       "\"\< \\nFile name = \>\"", ",", "$loadedFileName"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<First row of selectedFile: \>\"", ",", 
+       RowBox[{"$loadedFile", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$data", "=", 
+      RowBox[{"Delete", "[", 
+       RowBox[{"$loadedFile", ",", "1"}], "]"}]}], ";", "\[IndentingNewLine]",
+      "\[IndentingNewLine]", 
+     RowBox[{"FindNumberOfSweeps", "[", "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Protect", "[", 
+      RowBox[{
+      "$loadedFile", ",", "$loadedFilePath", ",", "$data", ",", 
+       "$loadedFileName"}], "]"}], ";"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.763356280092063*^9, 3.7633563381996393`*^9}, {
+   3.7633563880305843`*^9, 3.763356388514838*^9}, {3.7633564188639607`*^9, 
+   3.763356476457939*^9}, {3.763356522605814*^9, 3.763356523636831*^9}, {
+   3.7633567864526787`*^9, 3.76335679776173*^9}, {3.768815978154292*^9, 
+   3.7688160416481385`*^9}, {3.7688164335791044`*^9, 3.7688164405664144`*^9}, 
+   3.7771103172348433`*^9}],
+
+Cell[BoxData[
+ RowBox[{"FindNumberOfSweeps", ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"sweepsN", "=", "0"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"MapIndexed", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"If", "[", 
+         RowBox[{
+          RowBox[{"#", "==", "\"\<SWL\>\""}], ",", 
+          RowBox[{"Print", "[", 
+           RowBox[{"\"\<Number of sweeps detected: \>\"", ",", 
+            RowBox[{"sweepsN", "=", " ", 
+             RowBox[{
+              RowBox[{"First", "[", "#2", "]"}], "-", "1"}]}]}], "]"}]}], 
+         "]"}], "&"}], ",", 
+       RowBox[{"$loadedFile", "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Switch", "[", 
+      RowBox[{"sweepsN", ",", "0", ",", 
+       RowBox[{"Print", "[", "\"\<No SWL detected\>\"", "]"}], ",", "1", ",", 
+       RowBox[{"Variables1Sweep", "[", "]"}], ",", "2", ",", 
+       RowBox[{"Variables2Sweeps", "[", "]"}], ",", "3", ",", 
+       RowBox[{"Variables3Sweeps", "[", "]"}], ",", "4", ",", 
+       RowBox[{"Variables4Sweeps", "[", "]"}]}], "]"}], ";"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7626716062625027`*^9, 3.7626716266796*^9}, {
+   3.762671897447841*^9, 3.7626718989289846`*^9}, 3.7633566630872927`*^9, {
+   3.768564283420523*^9, 3.7685642979890604`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Variables1Sweep", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s1Length", " ", "=", " ", 
+      RowBox[{"Length", "[", "$data", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"$s1Values", " ", "=", " ", 
+      RowBox[{"TakeColumn", "[", "1", "]"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s1Length = \>\"", ",", " ", "$s1Length"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s1Values = \>\"", ",", " ", "$s1Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Protect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values"}], "]"}], ";"}]}], "\[IndentingNewLine]",
+    "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7625999682276*^9, 3.762600065367941*^9}, {
+  3.7626001260777082`*^9, 3.7626001469408383`*^9}, {3.7626050284150443`*^9, 
+  3.7626050486076226`*^9}, {3.7626050857951393`*^9, 3.7626051000713587`*^9}, {
+  3.763356672463931*^9, 3.763356715552535*^9}, {3.7633568607693996`*^9, 
+  3.7633568613786907`*^9}, {3.768815953928095*^9, 3.768815955299431*^9}, {
+  3.771910788079226*^9, 3.771910795158393*^9}, {3.7719108294714613`*^9, 
+  3.7719108861670065`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Variables2Sweeps", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s1Length", " ", "=", 
+      RowBox[{"FindPartitionLength2Sweeps", "[", "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s2Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"Length", "[", "$data", "]"}], "/", "$s1Length"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"$s1Values", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"S2Split", "[", 
+        RowBox[{"TakeColumn", "[", "1", "]"}], "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"$s2Values", "=", 
+      RowBox[{"Map", "[", 
+       RowBox[{"Mean", ",", 
+        RowBox[{"S2Split", "[", 
+         RowBox[{"TakeColumn", "[", "2", "]"}], "]"}]}], "]"}]}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s1Length = \>\"", ",", " ", "$s1Length"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s1Values = \>\"", ",", " ", "$s1Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s2Length = \>\"", ",", " ", "$s2Length"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Print", "[", 
+      RowBox[{"\"\<s2Values = \>\"", ",", " ", "$s2Values"}], "]"}], ";", 
+     "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{"Protect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values"}], "]"}], ";"}]}], "\[IndentingNewLine]",
+    "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.76260008128771*^9, 3.76260017672792*^9}, {
+   3.762605103995038*^9, 3.762605121439989*^9}, 3.7626052798153086`*^9, {
+   3.76335672449185*^9, 3.763356771080308*^9}, {3.763356881680814*^9, 
+   3.7633569022464027`*^9}, {3.7633713537019377`*^9, 3.763371366951151*^9}, 
+   3.768564870391493*^9, 3.7685649161812506`*^9, {3.7688159684632444`*^9, 
+   3.7688159702005663`*^9}, 3.76881610824548*^9, {3.7719107977377634`*^9, 
+   3.7719108013640375`*^9}, 3.771910896829957*^9, {3.771911014773621*^9, 
+   3.771911038670327*^9}, {3.7719110719744253`*^9, 3.771911073099161*^9}}],
+
+Cell["\<\
+The number of data points corrosponding to one value of sweep 3 = s1Length * \
+s2Length
+The number of data points corrosponding to one value of sweep 2 = s1Length\
+\>", "Text",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7621492267915516`*^9, 3.762149272496417*^9}, {
+  3.762150634000203*^9, 3.7621506478779926`*^9}, {3.770011740173653*^9, 
+  3.770011758516475*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Variables3Sweeps", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s1Length", " ", "=", 
+      RowBox[{"FindPartitionLength3Sweeps", "[", 
+       RowBox[{"4", ",", "3", ",", "7"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"$s2Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"FindPartitionLength2Sweeps", "[", 
+        RowBox[{"4", ",", "7"}], "]"}], "/", "$s1Length"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s3Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Length", "[", "$data", "]"}], "/", "$s1Length"}], "/", 
+       "$s2Length"}]}], ";", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"NumberQ", "[", "$s1Length", "]"}], "&&", 
+         RowBox[{"NumberQ", "[", "$s2Length", "]"}], "&&", " ", 
+         RowBox[{"NumberQ", "[", "$s3Length", "]"}]}], " ", ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"$s1Values", " ", "=", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"S3S2Split", "[", 
+             RowBox[{"TakeColumn", "[", "1", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"$s2Values", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{"Mean", ",", 
+            RowBox[{
+             RowBox[{"S3S2Split", "[", 
+              RowBox[{"TakeColumn", "[", "2", "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"$s3Values", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{"Mean", ",", 
+            RowBox[{"S3Split", "[", 
+             RowBox[{"TakeColumn", "[", "3", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Length = \>\"", ",", "$s1Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Length = \>\"", ",", " ", "$s2Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Length = \>\"", ",", " ", "$s3Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Values = \>\"", ",", " ", "$s1Values"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Values = \>\"", ",", " ", "$s2Values"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Values = \>\"", ",", " ", "$s3Values"}], "]"}], 
+         ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Length = \>\"", ",", "$s1Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Length = \>\"", ",", " ", "$s2Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Length = \>\"", ",", " ", "$s3Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{
+         "Print", "[", 
+          "\"\<At least one of these lenghts is not a number, no values \
+determined!\>\"", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+      "\[IndentingNewLine]", 
+      RowBox[{"Protect", "[", 
+       RowBox[{
+       "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",",
+         "$s3Length", ",", "$s3Values"}], "]"}]}], ";"}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.762600187847866*^9, 3.762600237157612*^9}, {
+   3.762605109744912*^9, 3.762605124599411*^9}, {3.7626053206949215`*^9, 
+   3.7626053222149625`*^9}, {3.7633569226772647`*^9, 3.763356974746619*^9}, {
+   3.763371374468878*^9, 3.7633713794380817`*^9}, {3.7685643576786165`*^9, 
+   3.768564379353396*^9}, {3.768564870400479*^9, 3.768564870401445*^9}, 
+   3.76856491749527*^9, 3.7685649555649815`*^9, {3.768651382092219*^9, 
+   3.768651385084214*^9}, 3.768815851859497*^9, {3.768881284072463*^9, 
+   3.7688813954989743`*^9}, 3.768885688549094*^9, {3.771910809340191*^9, 
+   3.771910812132641*^9}, 3.771910900698349*^9, {3.7719110861517634`*^9, 
+   3.771911091591402*^9}, 3.7719121824931335`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Variables4Sweeps", "[", "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"Unprotect", "[", 
+      RowBox[{
+      "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",", 
+       "$s3Length", ",", "$s3Values", ",", " ", "$s4Length", ",", " ", 
+       "$s4Values"}], "]"}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s1Length", " ", "=", 
+      RowBox[{"FindPartitionLength4Sweeps", "[", 
+       RowBox[{"5", ",", "3", ",", "7", ",", "15"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s2Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"FindPartitionLength3Sweeps", "[", 
+        RowBox[{"5", ",", "7", ",", "15"}], "]"}], "/", "$s1Length"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"$s3Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"FindPartitionLength2Sweeps", "[", 
+         RowBox[{"5", ",", "15"}], "]"}], "/", "$s1Length"}], "/", 
+       "$s2Length"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"$s4Length", " ", "=", " ", 
+      RowBox[{
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "$data", "]"}], "/", "$s1Length"}], "/", 
+        "$s2Length"}], "/", "$s3Length"}]}], ";", "\[IndentingNewLine]", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"NumberQ", "[", "$s1Length", "]"}], "&&", 
+         RowBox[{"NumberQ", "[", "$s2Length", "]"}], "&&", " ", 
+         RowBox[{"NumberQ", "[", "$s3Length", "]"}], " ", "&&", 
+         RowBox[{"NumberQ", "[", "$s4Length", "]"}]}], ",", 
+        "\[IndentingNewLine]", "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"$s1Values", " ", "=", " ", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"S4S3S2Split", "[", 
+              RowBox[{"TakeColumn", "[", "1", "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "[", 
+            RowBox[{"[", "1", "]"}], "]"}], "[", 
+           RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"$s2Values", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{"Mean", ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"S4S3S2Split", "[", 
+               RowBox[{"TakeColumn", "[", "2", "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"$s3Values", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{"Mean", ",", 
+            RowBox[{
+             RowBox[{"S4S3Split", "[", 
+              RowBox[{"TakeColumn", "[", "3", "]"}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"$s4Values", "=", 
+          RowBox[{"Map", "[", 
+           RowBox[{"Mean", ",", 
+            RowBox[{"S4Split", "[", 
+             RowBox[{"TakeColumn", "[", "4", "]"}], "]"}]}], "]"}]}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Length = \>\"", ",", "$s1Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Length = \>\"", ",", " ", "$s2Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Length = \>\"", ",", " ", "$s3Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s4Length = \>\"", ",", " ", "$s4Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Values = \>\"", ",", " ", "$s1Values"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Values = \>\"", ",", " ", "$s2Values"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Values = \>\"", ",", " ", "$s3Values"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s4Values = \>\"", ",", " ", "$s4Values"}], "]"}], 
+         ";"}], "\[IndentingNewLine]", "\[IndentingNewLine]", ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s1Length = \>\"", ",", "$s1Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s2Length = \>\"", ",", " ", "$s2Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s3Length = \>\"", ",", " ", "$s3Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Print", "[", 
+          RowBox[{"\"\<s4Length = \>\"", ",", " ", "$s4Length"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+         "Print", "[", 
+          "\"\<At least one of these lenghts is not a number, no values \
+determined!\>\"", "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+      "\[IndentingNewLine]", "\[IndentingNewLine]", 
+      RowBox[{"Protect", "[", 
+       RowBox[{
+       "$s1Length", ",", "$s1Values", ",", "$s2Length", ",", "$s2Values", ",",
+         "$s3Length", ",", "$s3Values", ",", " ", "$s4Length", ",", " ", 
+        "$s4Values"}], "]"}]}], ";"}]}], "\[IndentingNewLine]", 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768564312748141*^9, 3.76856431285087*^9}, {
+   3.7685643829333005`*^9, 3.768564404475238*^9}, {3.7685648704094467`*^9, 
+   3.7685648704104323`*^9}, 3.7685649186689157`*^9, 3.7685649564611607`*^9, 
+   3.7685653223249936`*^9, {3.768565548951214*^9, 3.7685655883130836`*^9}, {
+   3.7685656284912357`*^9, 3.768565628947015*^9}, {3.7685656598787465`*^9, 
+   3.768565778792735*^9}, {3.768566278752079*^9, 3.768566286977455*^9}, 
+   3.768566487393799*^9, {3.7686511648702984`*^9, 3.768651203762249*^9}, {
+   3.7686513642280164`*^9, 3.76865140537992*^9}, {3.7686515818600025`*^9, 
+   3.7686515855241947`*^9}, {3.7686516236815248`*^9, 
+   3.7686516249451184`*^9}, {3.7686516623868723`*^9, 
+   3.7686516684975185`*^9}, {3.768881196267375*^9, 3.7688812131362743`*^9}, {
+   3.7688814220243115`*^9, 3.768881494133658*^9}, 3.768882553888*^9, {
+   3.771910815821874*^9, 3.7719108194148116`*^9}, 3.7719109396512814`*^9, {
+   3.7719110966703415`*^9, 3.771911104915185*^9}, 3.771912175860521*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindPartitionLength2Sweeps", "[", 
+   RowBox[{
+    RowBox[{"SWLColumnNumber_:", "3"}], ",", 
+    RowBox[{"SWLNumber_:", "3"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"SWLColumn", ",", "partitions"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"SWLColumn", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "$data", "]"}], "[", 
+       RowBox[{"[", "SWLColumnNumber", "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"partitions", "=", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Do", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"SWLColumn", "[", 
+           RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber"}], ",", 
+         RowBox[{"partitions", "+=", "1"}]}], "]"}], "\[IndentingNewLine]", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "0", ",", 
+         RowBox[{"Length", "[", "SWLColumn", "]"}]}], "}"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Length", "[", "SWLColumn", "]"}], "/", "partitions"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.761632870033202*^9, 3.761632906879326*^9}, {
+   3.761632939246533*^9, 3.761633067063915*^9}, {3.7616331269279995`*^9, 
+   3.761633139590748*^9}, {3.7616332879700255`*^9, 3.7616332947589617`*^9}, {
+   3.761633575485135*^9, 3.76163357580628*^9}, {3.7616336141295037`*^9, 
+   3.761633616824377*^9}, {3.761637055038131*^9, 3.7616371139053383`*^9}, {
+   3.761637145032275*^9, 3.7616372761124744`*^9}, {3.7616374412713375`*^9, 
+   3.761637446823944*^9}, {3.761906374796195*^9, 3.7619063950008526`*^9}, {
+   3.762604722245116*^9, 3.7626047236236706`*^9}, {3.7626047738253393`*^9, 
+   3.762604775408245*^9}, 3.7626048162880993`*^9, {3.763356984989504*^9, 
+   3.763356987754459*^9}, {3.768564870311708*^9, 3.7685648856460915`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindPartitionLength3Sweeps", "[", 
+   RowBox[{
+    RowBox[{"SWLColumnNumber_:", "4"}], ",", 
+    RowBox[{"SWLNumber1_:", "3"}], ",", 
+    RowBox[{"SWLNumber2_:", "7"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"SWLColumn", ",", "partitions"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"SWLColumn", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "$data", "]"}], "[", 
+       RowBox[{"[", "SWLColumnNumber", "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"partitions", "=", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Do", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"SWLColumn", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber1"}], " ", "||", 
+          RowBox[{
+           RowBox[{"SWLColumn", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber2"}]}], ",", 
+         RowBox[{"partitions", "+=", "1"}]}], "]"}], "\[IndentingNewLine]", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "0", ",", 
+         RowBox[{"Length", "[", "SWLColumn", "]"}]}], "}"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Length", "[", "SWLColumn", "]"}], "/", "partitions"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7619759514905434`*^9, 3.761976014090429*^9}, {
+   3.7626047771557293`*^9, 3.7626047850951676`*^9}, 3.762604817715442*^9, {
+   3.7633569942731743`*^9, 3.763356995726016*^9}, 3.768564870320655*^9, 
+   3.76856494205379*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindPartitionLength4Sweeps", "[", 
+   RowBox[{
+    RowBox[{"SWLColumnNumber_:", "5"}], ",", 
+    RowBox[{"SWLNumber1_:", "3"}], ",", 
+    RowBox[{"SWLNumber2_:", "7"}], ",", 
+    RowBox[{"SWLNumber3_:", "15"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"SWLColumn", ",", "partitions"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"SWLColumn", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "$data", "]"}], "[", 
+       RowBox[{"[", "SWLColumnNumber", "]"}], "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"partitions", "=", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"Do", "[", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{"SWLColumn", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber1"}], " ", "||", 
+          RowBox[{
+           RowBox[{"SWLColumn", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber2"}], " ", "||", 
+          RowBox[{
+           RowBox[{"SWLColumn", "[", 
+            RowBox[{"[", "i", "]"}], "]"}], "\[Equal]", "SWLNumber3"}]}], ",", 
+         RowBox[{"partitions", "+=", "1"}]}], "]"}], "\[IndentingNewLine]", 
+       ",", 
+       RowBox[{"{", 
+        RowBox[{"i", ",", "0", ",", 
+         RowBox[{"Length", "[", "SWLColumn", "]"}]}], "}"}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"Length", "[", "SWLColumn", "]"}], "/", "partitions"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768564637947163*^9, 3.7685646947155876`*^9}, 
+   3.768564870330656*^9, 3.768564967583108*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Generic functions for manipulating data", "Subsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7626007755175533`*^9, 3.762600782658189*^9}, {
+  3.762671955461113*^9, 3.762671978548182*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"TakeColumn", "[", 
+    RowBox[{
+     RowBox[{"data_List:", "$data"}], ",", "column_Integer"}], "]"}], " ", ":=",
+    " ", 
+   RowBox[{
+    RowBox[{"Transpose", "[", "data", "]"}], "[", 
+    RowBox[{"[", "column", "]"}], "]"}]}], ";"}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.762153032946834*^9, 3.762153065977535*^9}, {
+  3.763357014463381*^9, 3.763357016915884*^9}, {3.7633713146696787`*^9, 
+  3.7633713251384926`*^9}, {3.7633714049253087`*^9, 3.7633714173325815`*^9}, {
+  3.763371454480744*^9, 3.763371458183011*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S2Split", "[", "list_List", "]"}], ":=", " ", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"list", "[", 
+     RowBox[{"[", 
+      RowBox[{
+       RowBox[{"1", "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"n", "-", "1"}], ")"}], "*", 
+         RowBox[{"(", "$s1Length", ")"}]}]}], ";;", 
+       RowBox[{
+        RowBox[{"(", "n", ")"}], "*", "$s1Length"}]}], " ", "]"}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"n", ",", "1", ",", "$s2Length"}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7621507757977743`*^9, 3.7621507812516174`*^9}, 
+   3.76215090286717*^9, {3.762150980216779*^9, 3.7621510112378283`*^9}, {
+   3.762151047293044*^9, 3.762151053757186*^9}, {3.7621511440462575`*^9, 
+   3.762151152203829*^9}, {3.7621512172806845`*^9, 3.7621512222502003`*^9}, {
+   3.763357079054378*^9, 3.7633570843541155`*^9}, {3.7633719855353103`*^9, 
+   3.7633720077310457`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S2SplitPart", "[", 
+   RowBox[{"list_List", ",", " ", "n_Integer"}], "]"}], ":=", " ", 
+  RowBox[{"list", "[", 
+   RowBox[{"[", 
+    RowBox[{
+     RowBox[{"1", "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"n", "-", "1"}], ")"}], "*", 
+       RowBox[{"(", "$s1Length", ")"}]}]}], ";;", 
+     RowBox[{
+      RowBox[{"(", "n", ")"}], "*", "$s1Length"}]}], " ", "]"}], 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7633737986216173`*^9, 3.7633738229353848`*^9}, 
+   3.768710148400797*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S3Split", "[", "list_List", "]"}], ":=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"list", "[", 
+     RowBox[{"[", 
+      RowBox[{
+       RowBox[{"1", "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"n", "-", "1"}], ")"}], "*", 
+         RowBox[{"(", 
+          RowBox[{"$s1Length", "*", "$s2Length"}], ")"}]}]}], ";;", 
+       RowBox[{
+        RowBox[{"(", "n", ")"}], "*", "$s1Length", " ", "*", " ", 
+        "$s2Length"}]}], "]"}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"n", ",", "1", ",", "$s3Length"}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.762150752211542*^9, 3.7621507979431143`*^9}, {
+  3.7621508606191835`*^9, 3.7621508790130405`*^9}, {3.762151142671556*^9, 
+  3.762151155921692*^9}, {3.762151215374881*^9, 3.7621512309579983`*^9}, {
+  3.763357056292309*^9, 3.763357066247528*^9}, {3.763371993200275*^9, 
+  3.763372016693313*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S3SplitPart", "[", 
+   RowBox[{"list_List", ",", "n_Integer"}], "]"}], ":=", 
+  RowBox[{"list", "[", 
+   RowBox[{"[", 
+    RowBox[{
+     RowBox[{"1", "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"n", "-", "1"}], ")"}], "*", 
+       RowBox[{"(", 
+        RowBox[{"$s1Length", "*", "$s2Length"}], ")"}]}]}], ";;", 
+     RowBox[{
+      RowBox[{"(", "n", ")"}], "*", "$s1Length", " ", "*", " ", 
+      "$s2Length"}]}], "]"}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.76215341384124*^9, 3.7621534556064053`*^9}, {
+  3.7633570701330757`*^9, 3.7633570755239897`*^9}, {3.763371995887187*^9, 
+  3.7633720324763465`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S3S2Split", "[", "list_List", "]"}], " ", ":=", " ", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"S2Split", "[", "#", "]"}], "&"}], ",", 
+    RowBox[{"S3Split", "[", "list", "]"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.762151602919538*^9, 3.7621516276747293`*^9}, {
+  3.7633570928070583`*^9, 3.763357102087115*^9}, {3.7633719981834764`*^9, 
+  3.763372021116352*^9}, {3.7685661061277246`*^9, 3.7685661068685293`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S4Split", "[", "list_List", "]"}], ":=", 
+  RowBox[{"Table", "[", 
+   RowBox[{
+    RowBox[{"list", "[", 
+     RowBox[{"[", 
+      RowBox[{
+       RowBox[{"1", "+", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{"n", "-", "1"}], ")"}], "*", 
+         RowBox[{"(", 
+          RowBox[{"$s1Length", "*", "$s2Length", "*", "$s3Length"}], 
+          ")"}]}]}], ";;", 
+       RowBox[{
+        RowBox[{"(", "n", ")"}], "*", "$s1Length", " ", "*", " ", "$s2Length",
+         "*", "$s3Length"}]}], "]"}], "]"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"n", ",", "1", ",", "$s4Length"}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S4SplitPart", "[", 
+   RowBox[{"list_List", ",", "n_Integer"}], "]"}], ":=", 
+  RowBox[{"list", "[", 
+   RowBox[{"[", 
+    RowBox[{
+     RowBox[{"1", "+", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"n", "-", "1"}], ")"}], "*", 
+       RowBox[{"(", 
+        RowBox[{"$s1Length", "*", "$s2Length", "*", "$s3Length"}], ")"}]}]}], 
+     ";;", 
+     RowBox[{
+      RowBox[{"(", "n", ")"}], "*", "$s1Length", " ", "*", " ", "$s2Length", 
+      "*", "$s3Length"}]}], "]"}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768566145744602*^9, 3.768566154841625*^9}, {
+  3.7685663248246193`*^9, 3.768566366431776*^9}, {3.7685664287339077`*^9, 
+  3.7685664314560566`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S4S3Split", "[", "list_List", "]"}], ":=", " ", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"S3Split", "[", "#", "]"}], "&"}], ",", 
+    RowBox[{"S4Split", "[", "list", "]"}]}], "]"}]}]], "Input",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"S4S3S2Split", "[", "list_List", "]"}], ":=", " ", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"S2Split", "[", "#", "]"}], "&"}], ",", 
+    RowBox[{"Map", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"S3Split", "[", "#", "]"}], "&"}], ",", 
+      RowBox[{"S4Split", "[", "list", "]"}]}], "]"}], ",", 
+    RowBox[{"{", "2", "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7685666637518187`*^9, 3.7685667327531476`*^9}, {
+  3.7686500627866006`*^9, 3.768650064740382*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Finding the switching point", "Subsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.769937137517333*^9, 3.7699371418846917`*^9}}],
+
+Cell["\<\
+FindSwitch looks at the difference between two adjacent data points, and \
+tracks the largest value, which might work poorly when the data is noisy. The \
+sign of the jump is determined by sign_Integer, which is 1 by default \
+(positive jump). When the largest difference is smaller than the treshold \
+value, the fallBackValue is returned. 
+There are two versions of the FindSwitch function. If only a data list is \
+given, the function returns the index of the data point where the jump \
+occurs. If also a corresponding value list is supplied, a list of lenght two \
+is returned, where the first element is the index of the point where the jump \
+occurs, and the second element is the cossesponding value.\
+\>", "Item",
+ InitializationCell->True,
+ CellChangeTimes->{{3.769937164822404*^9, 3.769937289634737*^9}, {
+  3.7699373587942486`*^9, 3.7699374704131403`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindSwitch", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_", ",", 
+    RowBox[{"fallBackValue_", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], "<", "treshold"}], ",", 
+      "fallBackValue", ",", 
+      RowBox[{"#", "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "&"}], "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Ordering", "[", 
+       RowBox[{
+        RowBox[{"sign", "*", 
+         RowBox[{"Differences", "[", "data", "]"}]}], ",", 
+        RowBox[{"-", "1"}]}], "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"Max", "[", 
+      RowBox[{"Differences", "[", "data", "]"}], "]"}]}], "}"}], 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.7687324998024487`*^9, {3.768732555915306*^9, 3.7687325570492926`*^9}, 
+   3.76873275277905*^9, 3.76873375918346*^9, {3.768733829392579*^9, 
+   3.768733859864766*^9}, {3.7687369133003798`*^9, 3.768736913634474*^9}, {
+   3.7687370729592276`*^9, 3.768737087283873*^9}, {3.7687371343749185`*^9, 
+   3.768737134693036*^9}, 3.7687373433228655`*^9, {3.7687380950896015`*^9, 
+   3.768738097873155*^9}, 3.770007174273504*^9, 3.770008158168605*^9, 
+   3.7703726705330067`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindSwitch", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", " ", "value_List", ",",
+     "data_List", ",", "treshold_", ",", 
+    RowBox[{"fallBackValue_", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"If", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"#", "[", 
+        RowBox[{"[", "2", "]"}], "]"}], "<", "treshold"}], ",", 
+      RowBox[{"{", 
+       RowBox[{"fallBackValue", ",", "fallBackValue"}], "}"}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"#", "[", 
+         RowBox[{"[", "1", "]"}], "]"}], ",", 
+        RowBox[{"value", "[", 
+         RowBox[{"[", 
+          RowBox[{"#", "[", 
+           RowBox[{"[", "1", "]"}], "]"}], "]"}], "]"}]}], "}"}]}], "]"}], 
+    "&"}], "[", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"Ordering", "[", 
+       RowBox[{
+        RowBox[{"sign", "*", 
+         RowBox[{"Differences", "[", "data", "]"}]}], ",", 
+        RowBox[{"-", "1"}]}], "]"}], "[", 
+      RowBox[{"[", "1", "]"}], "]"}], ",", 
+     RowBox[{"Max", "[", 
+      RowBox[{"Differences", "[", "data", "]"}], "]"}]}], "}"}], 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7687991906581326`*^9, 3.7687991934406824`*^9}, {
+   3.768799270667112*^9, 3.7687992786267796`*^9}, {3.7687994205660753`*^9, 
+   3.7687994222654905`*^9}, {3.7687996752726*^9, 3.768799699932625*^9}, {
+   3.768800152869568*^9, 3.7688001577227135`*^9}, {3.7688004473665323`*^9, 
+   3.7688004482481747`*^9}, 3.7700071776319866`*^9, 3.7700074666885386`*^9, 
+   3.770008159793208*^9, {3.7700128175804377`*^9, 3.770012818752037*^9}, 
+   3.7703726728578005`*^9}],
+
+Cell["\<\
+ShowSwitch uses FindSwitch to detect a jump, and then plots the data with a \
+point that indicates the detected jump point.\
+\>", "Item",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7699374879415197`*^9, 3.769937521301848*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ShowSwitch", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_", ",", 
+    RowBox[{"fallBackValue_", " ", ":", " ", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "switchingPoint", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"switchingPoint", "=", 
+      RowBox[{"FindSwitch", "[", 
+       RowBox[{"sign", ",", "data", ",", "treshold", ",", "fallBackValue"}], 
+       "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"switchingPoint", ",", 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"ListLinePlot", "[", 
+          RowBox[{"data", ",", 
+           RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+         RowBox[{"Graphics", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"{", 
+              RowBox[{"switchingPoint", ",", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "switchingPoint", "]"}], "]"}]}], "}"}], "]"}]}],
+            "}"}], "]"}], ",", 
+         RowBox[{"PlotRange", "->", "All"}]}], "]"}]}], "}"}]}]}], 
+   "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.76873681661401*^9, 3.7687368631924286`*^9}, {
+   3.768736907485922*^9, 3.7687369091384745`*^9}, {3.768737056220008*^9, 
+   3.7687370971464777`*^9}, 3.7687373415336585`*^9, {3.768738180166027*^9, 
+   3.768738290481851*^9}, 3.7700071793081727`*^9, 3.770008163919218*^9, 
+   3.770372676306678*^9, 3.7722712786698036`*^9, {3.7722715065210543`*^9, 
+   3.7722715121946955`*^9}, {3.772271585649122*^9, 3.7722715859771667`*^9}, {
+   3.7722716380918565`*^9, 3.7722716424658604`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ShowSwitch", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+    "data_List", ",", "treshold_", ",", 
+    RowBox[{"fallBackValue_", " ", ":", " ", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{"switchingPoint", ",", " ", "switchingValue"}], "}"}], ",", 
+    "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"switchingPoint", "=", 
+      RowBox[{
+       RowBox[{"FindSwitch", "[", 
+        RowBox[{
+        "sign", ",", "value", ",", "data", ",", "treshold", ",", 
+         "fallBackValue"}], "]"}], "[", 
+       RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"switchingValue", " ", "=", " ", 
+      RowBox[{
+       RowBox[{"FindSwitch", "[", 
+        RowBox[{
+        "sign", ",", "value", ",", "data", ",", "treshold", ",", 
+         "fallBackValue"}], "]"}], "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"switchingPoint", ",", "switchingValue", ",", 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"ListLinePlot", "[", 
+          RowBox[{
+           RowBox[{"Transpose", "[", 
+            RowBox[{"{", 
+             RowBox[{"value", ",", "data"}], "}"}], "]"}], ",", 
+           RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+         RowBox[{"Graphics", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"{", 
+              RowBox[{
+               RowBox[{"value", "[", 
+                RowBox[{"[", "switchingPoint", "]"}], "]"}], ",", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "switchingPoint", "]"}], "]"}]}], "}"}], "]"}]}],
+            "}"}], "]"}]}], "]"}]}], "}"}]}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768799432403407*^9, 3.768799455768859*^9}, {
+   3.7687995291615047`*^9, 3.7687995381215687`*^9}, {3.7687995870526247`*^9, 
+   3.7687995905473104`*^9}, {3.768799755894944*^9, 3.7687998067717967`*^9}, {
+   3.7688004561175423`*^9, 3.7688004572469683`*^9}, {3.7688005645588007`*^9, 
+   3.768800571912918*^9}, {3.76880288461065*^9, 3.768802886555354*^9}, 
+   3.7703726876514626`*^9, {3.77227126383914*^9, 3.7722712676376925`*^9}}],
+
+Cell["\<\
+FindSwitchArray and ShowSwitchArray apply FindSwitch and ShowSwitch to a list \
+of lists\
+\>", "Item",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7699375302655997`*^9, 3.7699375527247458`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindSwitchArray", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_Real", ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"FindSwitch", "[", 
+      RowBox[{"sign", ",", "#", ",", "treshold", ",", "fallBackValue"}], 
+      "]"}], "&"}], ",", "data"}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7688027315900106`*^9, 3.76880274698705*^9}, 
+   3.7700071895618253`*^9, 3.770008172379091*^9, 3.77037264875523*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"FindSwitchArray", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+    "data_List", ",", "treshold_Real", ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"MapThread", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"FindSwitch", "[", 
+      RowBox[{
+      "sign", ",", "#1", ",", "#2", ",", "treshold", ",", "fallBackValue"}], 
+      "]"}], "&"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"value", ",", "data"}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.768801094077958*^9, 3.7688011408066635`*^9, {3.7688011838689327`*^9, 
+   3.7688012173179483`*^9}, {3.768801254501652*^9, 3.768801300973152*^9}, {
+   3.7688013872531776`*^9, 3.76880139511875*^9}, {3.768801614211402*^9, 
+   3.7688016213259087`*^9}, {3.7688016532288017`*^9, 3.7688016563476276`*^9}, 
+   3.7700071906117296`*^9, 3.7700081728320875`*^9, 3.770372649802844*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ShowSwitchArray", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_Real", ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "switchingPoints", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"FindSwitchArray", "[", 
+       RowBox[{
+       "sign", ",", " ", "data", ",", "treshold", ",", " ", "fallBackValue"}],
+        "]"}], ",", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Show", "[", 
+          RowBox[{
+           RowBox[{"ListLinePlot", "[", "#", "]"}], ",", 
+           RowBox[{"Graphics", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+              RowBox[{"Point", "[", 
+               RowBox[{"{", 
+                RowBox[{
+                 RowBox[{"FindSwitch", "[", 
+                  RowBox[{"#", ",", "treshold", ",", "fallBackValue"}], "]"}],
+                  ",", 
+                 RowBox[{"#", "[", 
+                  RowBox[{"[", 
+                   RowBox[{"FindSwitch", "[", 
+                    RowBox[{"#", ",", "treshold", ",", "fallBackValue"}], 
+                    "]"}], "]"}], "]"}]}], "}"}], "]"}]}], "}"}], "]"}]}], 
+          "]"}], "&"}], ",", "data"}], "]"}]}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768737378907662*^9, 3.768737465192854*^9}, {
+   3.768738311211429*^9, 3.7687383635723453`*^9}, {3.768738492053573*^9, 
+   3.768738516922044*^9}, {3.7688019232792997`*^9, 3.7688019265792284`*^9}, 
+   3.770007191861408*^9, 3.77000817384237*^9, 3.7703726524557047`*^9, {
+   3.770372960859496*^9, 3.770372962248151*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ShowSwitchArray", "[", " ", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+    "data_List", ",", "treshold_Real", ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", 
+     RowBox[{"-", "1"}]}]}], "]"}], ":=", 
+  RowBox[{"MapThread", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowSwitch", "[", 
+      RowBox[{
+      "sign", ",", " ", "#1", ",", "#2", ",", "treshold", ",", " ", 
+       "fallBackValue"}], "]"}], "&"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"value", ",", "data"}], "}"}]}], "]"}]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.768801693135418*^9, 3.7688017067415524`*^9}, {
+   3.768801762464602*^9, 3.7688017750492134`*^9}, {3.768801807686904*^9, 
+   3.7688018121410713`*^9}, {3.768801868829734*^9, 3.768801909475195*^9}, {
+   3.768801957533927*^9, 3.7688019607565947`*^9}, 3.7700071928923984`*^9, 
+   3.7700081750069623`*^9, 3.770372654551051*^9, {3.7703729569345083`*^9, 
+   3.770372957715601*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Finding the switching point via the slope", "Subsection",
+ InitializationCell->True,
+ CellChangeTimes->{{3.7735690973008285`*^9, 3.773569112072637*^9}}],
+
+Cell["\<\
+Take the input data, apply a moving average and take the difference between \
+the subsequent list elements. Then, using Select, take the first element that \
+is larger than the input treshold (point). Select returns a list (of length \
+one if an element is found, and length zero if no element fulfills the \
+condition) so take the first element. As moving average shortens the list by \
+pointsToAverage -1 points, correct for this shift.\
+\>", "Text",
+ InitializationCell->True,
+ CellChangeTimes->{{3.773552627830021*^9, 3.7735527093240643`*^9}, {
+  3.773552763623496*^9, 3.7735527864101753`*^9}, {3.773552854862571*^9, 
+  3.773552856362256*^9}, {3.773568029452923*^9, 3.7735680611238995`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Clear", "[", 
+   RowBox[{"FindSlope", ",", "ShowFindSlope", ",", "DebugFindSlope"}], "]"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+    "Old", " ", "Versions", " ", "that", " ", "have", " ", "a", " ", 
+     "problem", " ", "when", " ", "multiple", " ", "points", " ", "have", " ",
+      "the", " ", "exact", " ", "same", " ", "value"}], ",", " ", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"i", ".", "e", ".", " ", "when"}], " ", "Position", " ", 
+      "returns", " ", "a", " ", "list", " ", "instead", " ", "of", " ", "a", 
+      " ", "single", " ", "element", "\[IndentingNewLine]", 
+      RowBox[{"FindSlope", "[", 
+       RowBox[{
+        RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+        "treshold_Real", ",", 
+        RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+        RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}]}], ":=", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"Module", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"point", ",", " ", "dif"}], "}"}], ",", 
+         "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{"dif", " ", "=", 
+           RowBox[{"Differences", " ", "[", 
+            RowBox[{"MovingAverage", "[", 
+             RowBox[{
+              RowBox[{"sign", " ", "*", " ", "data"}], ",", 
+              "pointsToAverage"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+          RowBox[{"point", " ", "=", " ", 
+           RowBox[{"Select", "[", 
+            RowBox[{"dif", ",", 
+             RowBox[{
+              RowBox[{"#", ">", "treshold"}], "&"}], ",", "1"}], "]"}]}], ";",
+           "\[IndentingNewLine]", 
+          RowBox[{"If", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"Length", "[", "point", "]"}], "\[Equal]", "0"}], ",", 
+            RowBox[{"{", "fallBackValue", "}"}], ",", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Flatten", "[", 
+               RowBox[{"Position", "[", 
+                RowBox[{"dif", ",", 
+                 RowBox[{"point", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "[", 
+              RowBox[{"[", "1", "]"}], "]"}], "+", "pointsToAverage", "-", 
+             "1"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}], 
+       "\[IndentingNewLine]", "\[IndentingNewLine]", 
+       RowBox[{"FindSlope", "[", 
+        RowBox[{
+         RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", " ", "value_List",
+          ",", "data_List", ",", "treshold_Real", ",", 
+         RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+         RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}]}], ":=", 
+      RowBox[{"Module", "[", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"point", ",", " ", "dif"}], "}"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"dif", " ", "=", 
+          RowBox[{"Differences", " ", "[", 
+           RowBox[{"MovingAverage", "[", 
+            RowBox[{
+             RowBox[{"sign", " ", "*", " ", "data"}], ",", 
+             "pointsToAverage"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+         RowBox[{"point", " ", "=", " ", 
+          RowBox[{"Select", "[", 
+           RowBox[{"dif", ",", 
+            RowBox[{
+             RowBox[{"#", ">", "treshold"}], "&"}], ",", "1"}], "]"}]}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"If", "[", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Length", "[", "point", "]"}], "\[Equal]", "0"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"fallBackValue", ",", " ", "fallBackValue"}], "}"}], ",", 
+           RowBox[{"Flatten", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"Position", "[", 
+                RowBox[{"dif", ",", 
+                 RowBox[{"point", "[", 
+                  RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "+", 
+               "pointsToAverage", "-", "1"}], ",", 
+              RowBox[{"value", "[", 
+               RowBox[{"[", 
+                RowBox[{"Flatten", "[", 
+                 RowBox[{
+                  RowBox[{"Position", "[", 
+                   RowBox[{"dif", ",", 
+                    RowBox[{"point", "[", 
+                    RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "+", 
+                  "pointsToAverage", "-", "1"}], "]"}], "]"}], "]"}]}], "}"}],
+             "]"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}]}]}], 
+   "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSlope", "[", 
+    RowBox[{
+     RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+     "treshold_Real", ",", 
+     RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+     RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"point", ",", " ", "dif"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"dif", " ", "=", 
+       RowBox[{"Differences", " ", "[", 
+        RowBox[{"MovingAverage", "[", 
+         RowBox[{
+          RowBox[{"sign", " ", "*", " ", "data"}], ",", "pointsToAverage"}], 
+         "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"point", " ", "=", " ", 
+       RowBox[{"Select", "[", 
+        RowBox[{"dif", ",", 
+         RowBox[{
+          RowBox[{"#", ">", "treshold"}], "&"}], ",", "1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "point", "]"}], "\[Equal]", "0"}], ",", 
+        RowBox[{"{", "fallBackValue", "}"}], ",", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"Flatten", "[", 
+           RowBox[{"Position", "[", 
+            RowBox[{"dif", ",", 
+             RowBox[{"point", "[", 
+              RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "]"}], "[", 
+          RowBox[{"[", "1", "]"}], "]"}], "+", "pointsToAverage", "-", 
+         "1"}]}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSlope", "[", 
+    RowBox[{
+     RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", " ", "value_List", 
+     ",", "data_List", ",", "treshold_Real", ",", 
+     RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+     RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"point", ",", " ", "dif"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"dif", " ", "=", 
+       RowBox[{"Differences", " ", "[", 
+        RowBox[{"MovingAverage", "[", 
+         RowBox[{
+          RowBox[{"sign", " ", "*", " ", "data"}], ",", "pointsToAverage"}], 
+         "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"point", " ", "=", " ", 
+       RowBox[{"Select", "[", 
+        RowBox[{"dif", ",", 
+         RowBox[{
+          RowBox[{"#", ">", "treshold"}], "&"}], ",", "1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Length", "[", "point", "]"}], "\[Equal]", "0"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"fallBackValue", ",", " ", "fallBackValue"}], "}"}], ",", 
+        RowBox[{"Flatten", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{
+             RowBox[{"Position", "[", 
+              RowBox[{"dif", ",", 
+               RowBox[{"point", "[", 
+                RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "[", 
+             RowBox[{"[", "1", "]"}], "]"}], "+", "pointsToAverage", "-", 
+            "1"}], ",", 
+           RowBox[{"value", "[", 
+            RowBox[{"[", 
+             RowBox[{"Flatten", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"Position", "[", 
+                 RowBox[{"dif", ",", 
+                  RowBox[{"point", "[", 
+                   RowBox[{"[", "1", "]"}], "]"}]}], "]"}], "[", 
+                RowBox[{"[", "1", "]"}], "]"}], "+", "pointsToAverage", "-", 
+               "1"}], "]"}], "]"}], "]"}]}], "}"}], "]"}]}], "]"}]}]}], 
+    "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ShowFindSlope", "[", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_Real", ",", 
+    RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+    RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}], ":=", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "switchingPoint", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"switchingPoint", "=", 
+      RowBox[{"FindSlope", "[", 
+       RowBox[{
+       "sign", ",", "data", ",", "treshold", ",", "pointsToAverage", ",", 
+        "fallBackValue"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"{", 
+      RowBox[{"switchingPoint", ",", 
+       RowBox[{"Show", "[", 
+        RowBox[{
+         RowBox[{"ListLinePlot", "[", 
+          RowBox[{"data", ",", 
+           RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+         RowBox[{"Graphics", "[", 
+          RowBox[{"{", 
+           RowBox[{
+            RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+            RowBox[{"Point", "[", 
+             RowBox[{"{", 
+              RowBox[{"switchingPoint", ",", 
+               RowBox[{"data", "[", 
+                RowBox[{"[", "switchingPoint", "]"}], "]"}]}], "}"}], "]"}]}],
+            "}"}], "]"}], ",", 
+         RowBox[{"PlotRange", "->", "All"}]}], "]"}]}], "}"}]}]}], 
+   "\[IndentingNewLine]", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"ShowFindSlope", "[", 
+    RowBox[{
+     RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+     "data_List", ",", "treshold_Real", ",", 
+     RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+     RowBox[{"fallBackValue_", " ", ":", " ", "0"}]}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"switchingPoint", ",", " ", "switchingValue"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"switchingPoint", "=", 
+       RowBox[{
+        RowBox[{"FindSlope", "[", 
+         RowBox[{
+         "sign", ",", "value", ",", "data", ",", "treshold", ",", 
+          "pointsToAverage", ",", "fallBackValue"}], "]"}], "[", 
+        RowBox[{"[", "1", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"switchingValue", " ", "=", " ", 
+       RowBox[{
+        RowBox[{"FindSlope", "[", 
+         RowBox[{
+         "sign", ",", "value", ",", "data", ",", "treshold", ",", 
+          "pointsToAverage", ",", "fallBackValue"}], "]"}], "[", 
+        RowBox[{"[", "2", "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", 
+       RowBox[{"switchingPoint", ",", "switchingValue", ",", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLinePlot", "[", 
+           RowBox[{
+            RowBox[{"Transpose", "[", 
+             RowBox[{"{", 
+              RowBox[{"value", ",", "data"}], "}"}], "]"}], ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          RowBox[{"Graphics", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+             RowBox[{"Point", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"value", "[", 
+                 RowBox[{"[", "switchingPoint", "]"}], "]"}], ",", 
+                RowBox[{"data", "[", 
+                 RowBox[{"[", "switchingPoint", "]"}], "]"}]}], "}"}], 
+              "]"}]}], "}"}], "]"}]}], "]"}]}], "}"}]}]}], "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"DebugFindSlope", "[", 
+    RowBox[{
+     RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+     "treshold_Real", ",", 
+     RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+     RowBox[{"fallBackValue_", " ", ":", "0"}]}], "]"}], ":=", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"switchingPoint", ",", "der"}], "}"}], ",", 
+     "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"der", " ", "=", " ", 
+       RowBox[{"Differences", " ", "[", 
+        RowBox[{"MovingAverage", "[", 
+         RowBox[{
+          RowBox[{"sign", " ", "*", " ", "data"}], ",", "pointsToAverage"}], 
+         "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"switchingPoint", "=", 
+       RowBox[{"FindSlope", "[", 
+        RowBox[{
+        "sign", ",", "data", ",", "treshold", ",", "pointsToAverage", ",", 
+         "fallBackValue"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"{", "\[IndentingNewLine]", 
+       RowBox[{"switchingPoint", ",", "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLinePlot", "[", 
+           RowBox[{"data", ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          RowBox[{"Graphics", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+             RowBox[{"Point", "[", 
+              RowBox[{"{", 
+               RowBox[{"switchingPoint", ",", 
+                RowBox[{"data", "[", 
+                 RowBox[{"[", "switchingPoint", "]"}], "]"}]}], "}"}], 
+              "]"}]}], "}"}], "]"}], ",", 
+          RowBox[{"PlotRange", "->", "All"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"Show", "[", 
+         RowBox[{
+          RowBox[{"ListLinePlot", "[", 
+           RowBox[{"der", ",", 
+            RowBox[{"PlotRange", "\[Rule]", "Full"}]}], "]"}], ",", 
+          RowBox[{"Graphics", "[", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"PointSize", "[", "0.025", "]"}], ",", 
+             RowBox[{"Point", "[", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"switchingPoint", "-", "pointsToAverage", "+", "1"}], 
+                ",", 
+                RowBox[{"der", "[", 
+                 RowBox[{"[", 
+                  RowBox[{
+                  "switchingPoint", "-", "pointsToAverage", "+", "1"}], "]"}],
+                  "]"}]}], "}"}], "]"}]}], "}"}], "]"}], ",", 
+          RowBox[{"PlotRange", "->", "All"}]}], "]"}]}], 
+       "\[IndentingNewLine]", "}"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"FindSlopeArray", "[", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_Real", ",", 
+    RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", "0"}]}], "]"}], ":=", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"FindSlope", "[", 
+      RowBox[{
+      "sign", ",", "#", ",", "treshold", ",", "pointsToAverage", ",", 
+       "fallBackValue"}], "]"}], "&"}], ",", "data"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"FindSlopeArray", "[", 
+    RowBox[{
+     RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+     "data_List", ",", "treshold_Real", ",", 
+     RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+     RowBox[{"fallBackValue_Integer", " ", ":", "0"}]}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "x", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"x", "=", 
+       RowBox[{"MapThread", "[", 
+        RowBox[{
+         RowBox[{
+          RowBox[{"FindSlope", "[", 
+           RowBox[{
+           "sign", ",", "#1", ",", "#2", ",", "treshold", ",", 
+            "pointsToAverage", ",", "fallBackValue"}], "]"}], "&"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"value", ",", "data"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"Transpose", "[", "x", "]"}], "[", 
+       RowBox[{"[", "2", "]"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ShowFindSlopeArray", "[", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "data_List", ",", 
+    "treshold_Real", ",", 
+    RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", "0"}]}], "]"}], ":=", 
+  RowBox[{"Map", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowFindSlope", "[", 
+      RowBox[{
+      "sign", ",", " ", "#", ",", "treshold", ",", "pointsToAverage", ",", 
+       " ", "fallBackValue"}], "]"}], "&"}], ",", "data"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"ShowFindSlopeArray", "[", 
+   RowBox[{
+    RowBox[{"sign_Integer", " ", ":", " ", "1"}], ",", "value_List", ",", 
+    "data_List", ",", "treshold_Real", ",", 
+    RowBox[{"pointsToAverage_Integer", " ", ":", " ", "3"}], ",", 
+    RowBox[{"fallBackValue_Integer", " ", ":", "0"}]}], "]"}], ":=", 
+  RowBox[{"MapThread", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ShowFindSlope", "[", 
+      RowBox[{
+      "sign", ",", " ", "#1", ",", "#2", ",", "treshold", ",", 
+       "pointsToAverage", ",", " ", "fallBackValue"}], "]"}], "&"}], ",", 
+    RowBox[{"{", 
+     RowBox[{"value", ",", "data"}], "}"}]}], "]"}]}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.7687324998024487`*^9, {3.768732555915306*^9, 3.7687325570492926`*^9}, 
+   3.76873275277905*^9, 3.76873375918346*^9, {3.768733829392579*^9, 
+   3.768733859864766*^9}, {3.7687369133003798`*^9, 3.768736913634474*^9}, {
+   3.7687370729592276`*^9, 3.768737087283873*^9}, {3.7687371343749185`*^9, 
+   3.768737134693036*^9}, 3.7687373433228655`*^9, {3.7687380950896015`*^9, 
+   3.768738097873155*^9}, 3.770007174273504*^9, 3.770008158168605*^9, 
+   3.7703726705330067`*^9, {3.773482546767416*^9, 3.773482547126766*^9}, {
+   3.7734826474115486`*^9, 3.7734826792850685`*^9}, {3.7735525878242245`*^9, 
+   3.7735526248815794`*^9}, {3.7735526726290474`*^9, 3.773552673378874*^9}, {
+   3.773552825980767*^9, 3.7735529498387413`*^9}, 3.77355298167362*^9, {
+   3.77355305458832*^9, 3.7735530591184874`*^9}, {3.773553092327287*^9, 
+   3.773553105313122*^9}, {3.7735533313586645`*^9, 3.773553346594697*^9}, {
+   3.7735533848137026`*^9, 3.7735534258270645`*^9}, {3.773553458832902*^9, 
+   3.7735535137856107`*^9}, 3.7735536736007338`*^9, {3.773554208088637*^9, 
+   3.7735542374882183`*^9}, {3.7735543949421215`*^9, 
+   3.7735544133777122`*^9}, {3.7735545354003925`*^9, 
+   3.7735545416828175`*^9}, {3.773554583001698*^9, 3.7735545991695085`*^9}, {
+   3.7735547497138834`*^9, 3.773554759615232*^9}, {3.7735547908178363`*^9, 
+   3.7735547942735863`*^9}, {3.7735548356647673`*^9, 
+   3.7735548878542633`*^9}, {3.773554926448662*^9, 3.773554933560693*^9}, 
+   3.773554993422822*^9, {3.7735550462031136`*^9, 3.773555094160545*^9}, {
+   3.773555243726021*^9, 3.773555245111208*^9}, {3.7735552751232185`*^9, 
+   3.7735552941128683`*^9}, 3.773555530262605*^9, {3.7735555855468245`*^9, 
+   3.773555585999836*^9}, {3.7735671846075687`*^9, 3.7735672701118245`*^9}, {
+   3.7735673565834064`*^9, 3.773567363662945*^9}, {3.7735674536717067`*^9, 
+   3.773567491929822*^9}, {3.7735675442675085`*^9, 3.773567589752592*^9}, {
+   3.7735678172695575`*^9, 3.7735678209581547`*^9}, {3.7735678646277137`*^9, 
+   3.7735678877676525`*^9}, {3.773567979357139*^9, 3.7735679815753665`*^9}, {
+   3.773568471611638*^9, 3.773568474711008*^9}, {3.7735686643313293`*^9, 
+   3.7735686975395594`*^9}, {3.773569126981919*^9, 3.7735691273412585`*^9}, 
+   3.773575291480362*^9, {3.7735759422429967`*^9, 3.773575946522811*^9}, {
+   3.7736402010806336`*^9, 3.7736402129893045`*^9}, {3.773640252329775*^9, 
+   3.773640254688547*^9}, {3.7736403840854616`*^9, 3.773640466949522*^9}, {
+   3.773640632559774*^9, 3.773640633731329*^9}, {3.77364164212222*^9, 
+   3.773641680517824*^9}, {3.7736418358036532`*^9, 3.773641842761697*^9}, {
+   3.7782226544394836`*^9, 3.778222656793603*^9}, {3.7782228192015333`*^9, 
+   3.778222843562317*^9}, {3.77838850697048*^9, 3.778388551037007*^9}, 
+   3.7783885892410088`*^9, {3.779624769426697*^9, 3.7796247766566534`*^9}, {
+   3.7796248511750298`*^9, 3.779624866244548*^9}, {3.779625080479313*^9, 
+   3.779625109830981*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["End the `Private context", "Section",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"End", "[", "]"}]], "Code"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["End the package context", "Section",
+ InitializationCell->True],
+
+Cell[BoxData[
+ RowBox[{"EndPackage", "[", "]"}]], "Code"],
+
+Cell["eh?", "Text",
+ InitializationCell->True,
+ CellChangeTimes->{{3.776423746785373*^9, 3.7764237591813865`*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+AutoGeneratedPackage->Automatic,
+WindowSize->{1324, 988},
+WindowMargins->{{249, Automatic}, {Automatic, 53}},
+TaggingRules->{"Salvaged" -> True},
+InitializationCell->True,
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (September 21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 95, 2, 90, "Title",
+ InitializationCell->True],
+Cell[CellGroupData[{
+Cell[700, 28, 119, 2, 63, "Section",
+ InitializationCell->True],
+Cell[822, 32, 1311, 24, 201, "Text",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2170, 61, 63, 1, 63, "Section",
+ InitializationCell->True],
+Cell[2236, 64, 89, 1, 50, "Code"],
+Cell[CellGroupData[{
+Cell[2350, 69, 236, 4, 43, "Subsection",
+ InitializationCell->True],
+Cell[2589, 75, 1458, 23, 69, "Code"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4084, 103, 88, 1, 43, "Subsection",
+ InitializationCell->True],
+Cell[4175, 106, 224, 7, 46, "Input",
+ InitializationCell->True],
+Cell[CellGroupData[{
+Cell[4424, 117, 154, 2, 34, "Subsubsection",
+ InitializationCell->True],
+Cell[4581, 121, 878, 19, 142, "Input",
+ InitializationCell->True],
+Cell[5462, 142, 507, 10, 85, "Input",
+ InitializationCell->True],
+Cell[5972, 154, 615, 12, 85, "Input",
+ InitializationCell->True],
+Cell[6590, 168, 703, 13, 85, "Input",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7330, 186, 161, 2, 34, "Subsubsection",
+ InitializationCell->True],
+Cell[7494, 190, 561, 12, 85, "Input",
+ InitializationCell->True],
+Cell[8058, 204, 426, 10, 46, "Input",
+ InitializationCell->True],
+Cell[8487, 216, 423, 10, 46, "Input",
+ InitializationCell->True],
+Cell[8913, 228, 362, 8, 46, "Input",
+ InitializationCell->True],
+Cell[9278, 238, 450, 10, 46, "Input",
+ InitializationCell->True],
+Cell[9731, 250, 342, 8, 46, "Input",
+ InitializationCell->True],
+Cell[10076, 260, 503, 12, 46, "Input",
+ InitializationCell->True],
+Cell[10582, 274, 478, 11, 46, "Input",
+ InitializationCell->True],
+Cell[11063, 287, 491, 10, 46, "Input",
+ InitializationCell->True],
+Cell[11557, 299, 442, 9, 46, "Input",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12036, 313, 150, 2, 34, "Subsubsection",
+ InitializationCell->True],
+Cell[12189, 317, 1178, 20, 161, "Input",
+ InitializationCell->True],
+Cell[13370, 339, 607, 12, 85, "Input",
+ InitializationCell->True],
+Cell[13980, 353, 496, 11, 85, "Input",
+ InitializationCell->True],
+Cell[14479, 366, 501, 11, 85, "Input",
+ InitializationCell->True],
+Cell[14983, 379, 1237, 20, 180, "Input",
+ InitializationCell->True],
+Cell[16223, 401, 655, 13, 104, "Input",
+ InitializationCell->True],
+Cell[16881, 416, 733, 14, 104, "Input",
+ InitializationCell->True],
+Cell[17617, 432, 607, 12, 104, "Input",
+ InitializationCell->True],
+Cell[18227, 446, 645, 13, 104, "Input",
+ InitializationCell->True]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18933, 466, 72, 1, 63, "Section",
+ InitializationCell->True],
+Cell[19008, 469, 73, 1, 50, "Code"],
+Cell[CellGroupData[{
+Cell[19106, 474, 153, 2, 43, "Subsection",
+ InitializationCell->True],
+Cell[19262, 478, 980, 23, 142, "Input"],
+Cell[20245, 503, 3081, 67, 408, "Input",
+ InitializationCell->True],
+Cell[23329, 572, 1402, 32, 104, "Input",
+ InitializationCell->True],
+Cell[24734, 606, 1704, 35, 256, "Input",
+ InitializationCell->True],
+Cell[26441, 643, 2574, 55, 332, "Input",
+ InitializationCell->True],
+Cell[29018, 700, 381, 8, 49, "Text",
+ InitializationCell->True],
+Cell[29402, 710, 4828, 104, 598, "Input",
+ InitializationCell->True],
+Cell[34233, 816, 6514, 141, 693, "Input",
+ InitializationCell->True],
+Cell[40750, 959, 2006, 44, 180, "Input",
+ InitializationCell->True],
+Cell[42759, 1005, 1711, 43, 180, "Input",
+ InitializationCell->True],
+Cell[44473, 1050, 1767, 45, 180, "Input",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[46277, 1100, 205, 3, 43, "Subsection",
+ InitializationCell->True],
+Cell[46485, 1105, 586, 14, 46, "Input",
+ InitializationCell->True],
+Cell[47074, 1121, 963, 23, 46, "Input",
+ InitializationCell->True],
+Cell[48040, 1146, 558, 17, 46, "Input",
+ InitializationCell->True],
+Cell[48601, 1165, 944, 24, 46, "Input",
+ InitializationCell->True],
+Cell[49548, 1191, 686, 19, 46, "Input",
+ InitializationCell->True],
+Cell[50237, 1212, 501, 11, 46, "Input",
+ InitializationCell->True],
+Cell[50741, 1225, 675, 20, 46, "Input",
+ InitializationCell->True],
+Cell[51419, 1247, 727, 20, 46, "Input",
+ InitializationCell->True],
+Cell[52149, 1269, 276, 8, 46, "Input",
+ InitializationCell->True],
+Cell[52428, 1279, 555, 15, 46, "Input",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[53020, 1299, 144, 2, 43, "Subsection",
+ InitializationCell->True],
+Cell[53167, 1303, 878, 14, 79, "Item",
+ InitializationCell->True],
+Cell[54048, 1319, 1434, 38, 66, "Input",
+ InitializationCell->True],
+Cell[55485, 1359, 1703, 45, 66, "Input",
+ InitializationCell->True],
+Cell[57191, 1406, 242, 5, 29, "Item",
+ InitializationCell->True],
+Cell[57436, 1413, 1823, 42, 85, "Input",
+ InitializationCell->True],
+Cell[59262, 1457, 2386, 56, 123, "Input",
+ InitializationCell->True],
+Cell[61651, 1515, 209, 5, 29, "Item",
+ InitializationCell->True],
+Cell[61863, 1522, 641, 16, 46, "Input",
+ InitializationCell->True],
+Cell[62507, 1540, 998, 23, 66, "Input",
+ InitializationCell->True],
+Cell[63508, 1565, 1826, 44, 85, "Input",
+ InitializationCell->True],
+Cell[65337, 1611, 1009, 23, 66, "Input",
+ InitializationCell->True]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[66383, 1639, 158, 2, 43, "Subsection",
+ InitializationCell->True],
+Cell[66544, 1643, 705, 11, 68, "Text",
+ InitializationCell->True],
+Cell[67252, 1656, 20189, 469, 1187, "Input",
+ InitializationCell->True]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[87490, 2131, 70, 1, 63, "Section",
+ InitializationCell->True],
+Cell[87563, 2134, 50, 1, 50, "Code"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[87650, 2140, 69, 1, 63, "Section",
+ InitializationCell->True],
+Cell[87722, 2143, 57, 1, 50, "Code"],
+Cell[87782, 2146, 114, 2, 30, "Text",
+ InitializationCell->True]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+

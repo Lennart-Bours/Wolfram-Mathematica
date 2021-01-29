@@ -1,0 +1,2972 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[    113821,       2963]
+NotebookOptionsPosition[    107816,       2766]
+NotebookOutlinePosition[    108669,       2792]
+CellTagsIndexPosition[    108626,       2789]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["SuperPackage.m package", "Title",
+ TextAlignment->Center],
+
+Cell[CellGroupData[{
+
+Cell["Notes", "Section",
+ CellChangeTimes->{{3.733564463986932*^9, 3.7335644644172044`*^9}}],
+
+Cell["\<\
+flux is \[CapitalPhi]/\[CapitalPhi]0; the flux through the junction, \
+normalized by the quantum of flux
+\[CapitalDelta] is normalized by \[CapitalDelta]0 and T by Tc, variables \
+input for functions are always expected in these units
+
+Energy is given in Joule
+
+General order of parameters: energy ,flux ,T ,L, \[Phi]0\
+\>", "Text",
+ CellChangeTimes->{{3.7335644751624804`*^9, 3.733564495496433*^9}, {
+  3.733572560436421*^9, 3.733572580717151*^9}, {3.7367478004068813`*^9, 
+  3.7367478149584017`*^9}, {3.7471350352355976`*^9, 3.7471350461389804`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Begin the package", "Section"],
+
+Cell[BoxData[
+ RowBox[{"BeginPackage", "[", "\"\<SuperPackage`\>\"", "]"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell["Global constants", "Subsection",
+ CellChangeTimes->{{3.6967715725332775`*^9, 3.6967715851588287`*^9}, {
+  3.733486190798023*^9, 3.7334861921765556`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"kB", "=", 
+   RowBox[{"1.3806504", "*", 
+    RowBox[{"10", "^", 
+     RowBox[{"-", "23"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"q", " ", "=", " ", 
+   RowBox[{"1.602176487", "*", 
+    RowBox[{"10", "^", 
+     RowBox[{"-", "19"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[CapitalPhi]0", "=", 
+    RowBox[{"2.067", " ", 
+     RowBox[{"10", "^", 
+      RowBox[{"-", "15"}]}]}]}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{"Flux", " ", "quantum"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[HBar]", "=", 
+   RowBox[{"1.054571628251774", "*", 
+    RowBox[{"10", "^", 
+     RowBox[{"-", "34"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"h", " ", "=", " ", 
+   RowBox[{"6.62606979", "*", 
+    RowBox[{"10", "^", 
+     RowBox[{"\[Minus]", "34"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"fact", "=", 
+    RowBox[{"1.0", 
+     RowBox[{"\[Pi]", "/", 
+      RowBox[{"Exp", "[", "EulerGamma", "]"}]}]}]}], ";"}], 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "When", " ", "normalizing", " ", "E", " ", "by", " ", "\[CapitalDelta]0", 
+     " ", "and", " ", "T", " ", "by", " ", "Tc"}], ",", " ", 
+    RowBox[{
+     RowBox[{"this", " ", "factor", " ", "appears", " ", "as", " ", 
+      FractionBox["\[CapitalDelta]0", 
+       RowBox[{"kb", " ", "Tc"}]]}], " ", "=", " ", "fact"}]}], " ", 
+   "*)"}]}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.6967726115044107`*^9, 3.696772618882016*^9}, {
+   3.6987471208180637`*^9, 3.698747193645127*^9}, {3.699943641239854*^9, 
+   3.6999436588088446`*^9}, {3.7190418703426313`*^9, 3.719041888854499*^9}, {
+   3.7193009530818105`*^9, 3.719300953650134*^9}, {3.7193168985001755`*^9, 
+   3.7193169581735306`*^9}, 3.7198118341622276`*^9, {3.720852270243249*^9, 
+   3.720852282230795*^9}, {3.7334839388454895`*^9, 3.733483941044939*^9}, {
+   3.7334862065964746`*^9, 3.733486227432927*^9}, {3.733808966105133*^9, 
+   3.733808967752083*^9}, {3.736683786050581*^9, 3.736683896562726*^9}, 
+   3.7366841564833307`*^9, {3.7366850158997145`*^9, 3.7366850299548845`*^9}, 
+   3.7479824033073835`*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Electron-phonon coupling constants", "Subsubsection",
+ CellChangeTimes->{{3.747982387641247*^9, 3.7479823989061203`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"\[CapitalSigma]AlMn", "=", 
+   RowBox[{"4.5", "\[Times]", 
+    SuperscriptBox["10", "9"]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[CapitalSigma]Al", "=", 
+   RowBox[{"2.5", "\[Times]", 
+    SuperscriptBox["10", "8"]}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[CapitalSigma]Cu", " ", "=", " ", 
+   RowBox[{"2", " ", "\[Times]", " ", 
+    SuperscriptBox["10", "9"]}]}], ";"}]}], "Input"]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Usage messages for the public functions", \
+"Section"]], "Subsection"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     StyleBox[
+      RowBox[{"MyFunction", "::", "usage"}], "MessageName"], "=", 
+     "\"\<MyFunction[x] is a function that does something.\>\""}], ";"}], 
+   "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Test", "::", "usage"}], " ", "=", " ", 
+    "\"\<a test function\>\""}], ";"}]}]], "Input",
+ CellChangeTimes->{3.792222606177487*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parameters", "Subsection",
+ CellChangeTimes->{{3.7335544145889845`*^9, 3.733554439344268*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    StyleBox[
+     RowBox[{"Set", 
+      StyleBox["\[CapitalDelta]0", "MessageName"]}]], 
+    StyleBox["::", "MessageName"], 
+    StyleBox["usage", "MessageName"]}], "=", 
+   "\"\<Set the real value of the gap.\>\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     StyleBox[
+      RowBox[{"Get", 
+       StyleBox["\[CapitalDelta]0", "MessageName"]}]], 
+     StyleBox["::", "MessageName"], 
+     StyleBox["usage", "MessageName"]}], "=", 
+    "\"\<Gives the real value of the gap.\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetTc", "::", "usage"}], " ", "=", 
+   "\"\<Gies the value of the critical temperature in Kelvin, is defined when \
+setting \[CapitalDelta]0.\>\""}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Set\[Gamma]", "::", "usage"}], " ", "=", " ", 
+   "\"\<Set the value of Dynes' \[Gamma].\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Get\[Gamma]", "::", "usage"}], " ", "=", " ", 
+    "\"\<Get the value of the Dynes' \[Gamma].\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetvF", "::", "usage"}], " ", "=", " ", 
+   "\"\<Set the value of the Fermi velocity.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"GetvF", "::", "usage"}], " ", "=", " ", 
+   "\"\<Get the value of the Fermi velocity.\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.733484102407647*^9, 3.7334841362401133`*^9}, 
+   3.733484185665692*^9, {3.733484425275516*^9, 3.7334844254970274`*^9}, 
+   3.7334844846042523`*^9, {3.7334846145827594`*^9, 3.7334846150987277`*^9}, {
+   3.733486732496812*^9, 3.7334867927057266`*^9}, {3.73354562868534*^9, 
+   3.7335456402487698`*^9}, {3.733546498696076*^9, 3.7335465045960793`*^9}, {
+   3.733552430051856*^9, 3.733552486688526*^9}, {3.7335525919029837`*^9, 
+   3.733552610416119*^9}, {3.733552692224392*^9, 3.7335527745535173`*^9}, {
+   3.7335532256896834`*^9, 3.7335532266583433`*^9}, {3.733553637241553*^9, 
+   3.73355364172108*^9}, {3.7335544191299887`*^9, 3.733554488162261*^9}, {
+   3.7366851524224806`*^9, 3.7366851959532847`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["General functions", "Subsection",
+ CellChangeTimes->{{3.7471337032430625`*^9, 3.7471337048640795`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"fermi", "::", "usage"}], " ", "=", " ", 
+   "\"\<fermi[energy,T] \\n The Fermi districution function.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Rho]Graphene", "::", "usage"}], " ", "=", " ", 
+  "\"\<\[Rho]Graphene [energy] \\n The low energy approximation of the DoS in \
+graphene in units of \!\(\*SuperscriptBox[\(cm\), \(-2\)]\)\>\""}]}], "Input",
+ CellChangeTimes->{{3.7471337136454124`*^9, 3.7471337723027687`*^9}, {
+   3.7471338338268366`*^9, 3.747133835231513*^9}, 3.7471346733278804`*^9, {
+   3.7471348417817154`*^9, 3.7471348479714537`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["General superconductivity", "Subsection",
+ CellChangeTimes->{{3.7335544333611264`*^9, 3.7335544373450317`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[CapitalDelta]", "::", "usage"}], "=", 
+   "\"\<\[CapitalDelta][T] \\n Gives the gap.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Rho]QP", "::", "usage"}], " ", "=", " ", 
+    "\"\<\[Rho]QP[energy,T,\[Gamma]:0] \\n The BCS quasiparticle density of \
+states.\>\""}], ";"}], " "}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{
+  3.733554445542472*^9, {3.733564077482132*^9, 3.7335640792818413`*^9}, {
+   3.7335689886459465`*^9, 3.7335689929344563`*^9}, 3.7471337101027207`*^9, {
+   3.792222818081415*^9, 3.7922228206115003`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["General thermal transport", "Subsection",
+ CellChangeTimes->{{3.7367491569671965`*^9, 3.7367491604227977`*^9}, {
+  3.7367649954325533`*^9, 3.7367649989403296`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GQ", "::", "usage"}], " ", "=", " ", 
+  "\"\<GQ[T] \\n The quantum of thermal conductance. Input T is expected in \
+units of Tc, as per usual.\>\""}]], "Input",
+ CellChangeTimes->{{3.7367491641708713`*^9, 3.7367492047617197`*^9}, 
+   3.736749873385261*^9, {3.7367622038626347`*^9, 3.7367622178292685`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Topological Josephson junction", "Subsection",
+ CellChangeTimes->{{3.733564082658306*^9, 3.7335640903370748`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Rho]TJJ", "::", "usage"}], " ", "=", " ", 
+   "\"\<\[Rho]TJJ[energy, flux, T, L, \[Phi]0:0] \\n The density of states of \
+a topological Josephson junction, not including the Andreev bound states. The \
+length is expected in units of \[Xi]0 (which is itself rescaled by \
+\[CapitalDelta]0). The superconducting phase difference \[Phi]0 is optional, \
+and 0 by default.\>\""}], ";"}]], "Input",
+ CellChangeTimes->{{3.733564096312767*^9, 3.733564114641458*^9}, {
+   3.733564146282222*^9, 3.7335642101775646`*^9}, 3.7335642695481462`*^9, {
+   3.7335647615634756`*^9, 3.733564866561988*^9}, {3.7335685568385935`*^9, 
+   3.7335685818351984`*^9}, {3.7335687680820923`*^9, 
+   3.7335688731740513`*^9}, {3.733568980317706*^9, 3.733568981043758*^9}, {
+   3.733736644187501*^9, 3.7337366452695637`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Transmissions", "Subsubsection",
+ CellChangeTimes->{{3.7337366384451537`*^9, 3.7337366411818295`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"transmissionTJJ", "::", "usage"}], " ", "=", " ", 
+   "\"\<transmissionTJJ[energy, flux, T, L, \[Phi]0:0] \\n The transmission \
+function of a topological Josepson junction for right-moving particles, not \
+including the Andreev bound states. The length is expected in units of \[Xi]0 \
+(which is itself rescaled by \[CapitalDelta]0). The superconducting phase \
+difference \[Phi]0 is optional, and 0 by default.\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"transmissionTJJU", "::", "usage"}], " ", "=", " ", 
+   "\"\<transmissionTJJ[energy, flux, T, L, \[Phi]0:0] \\n The transmission \
+function of a topological Josepson junction for right-moving particles along \
+the upper edge, not including the Andreev bound states. The length is \
+expected in units of \[Xi]0 (which is itself rescaled by \[CapitalDelta]0). \
+The superconducting phase difference \[Phi]0 is optional, and 0 by default.\>\
+\""}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"transmissionTJJL", "::", "usage"}], " ", "=", " ", 
+   "\"\<transmissionTJJ[energy, flux, T, L, \[Phi]0:0] \\n The transmission \
+function of a topological Josepson junction for right-moving particles along \
+the lower edge, not including the Andreev bound states. The length is \
+expected in units of \[Xi]0 (which is itself rescaled by \[CapitalDelta]0). \
+The superconducting phase difference \[Phi]0 is optional, and 0 by default.\>\
+\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.7337366795653114`*^9, 3.7337367377828636`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Thermal conductance (linear)", "Subsection",
+ CellChangeTimes->{{3.74685866651855*^9, 3.74685867421305*^9}, {
+  3.7471311501564274`*^9, 3.74713115982504*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GNProbe", "::", "usage"}], " ", "=", " ", 
+  "\"\<GNProbeLinear[flux, T, L, \[Phi]0:0, V:0 ,RTunnelProbe:1, rescale -> \
+True] \\n The thermal conductance of a normal probe - TJJ.\>\""}]], "Input",
+ CellChangeTimes->{{3.7468586789187765`*^9, 3.746858754498622*^9}, {
+   3.7468588471384697`*^9, 3.746858847919756*^9}, {3.7471312665767784`*^9, 
+   3.747131277186235*^9}, {3.7471313104461837`*^9, 3.7471313328162513`*^9}, 
+   3.7471314181259737`*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"GGProbe", "::", "usage"}], " ", "=", " ", 
+  "\"\<GGProbeLinear[flux, T, L, \[Phi]0:0, V:0 ,RTunnelProbe:1, rescale -> \
+True] \\n The thermal conductance of a graphene probe - TJJ.\>\""}]], "Input",
+ CellChangeTimes->{{3.7471312492060585`*^9, 3.7471312543259716`*^9}, {
+  3.747131291995965*^9, 3.747131317355934*^9}, {3.747131419835929*^9, 
+  3.747131420125741*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"thermalConductanceTJJ", "::", "usage"}], " ", "=", " ", 
+   "\"\<thermalConductanceTJJ[flux_,T_,L_,\[Phi]0:0,rescale -> True (False)] \
+\\n The thermal conductance of a topological Josephson junction, in the \
+linear approximation. When setting rescale -> False, a value for \[Phi]0 must \
+be provided.\>\""}], ";"}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Heat currents", "Subsection",
+ CellChangeTimes->{{3.7335733274414253`*^9, 3.733573329273806*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Heat current through the S-Ti-S junction", "Subsubsection",
+ CellChangeTimes->{{3.7471171410352073`*^9, 3.7471171655162582`*^9}, {
+  3.747131222546215*^9, 3.7471312349563236`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"JJunctionLinear", "::", "usage"}], " ", "=", " ", 
+    "\"\<JJunctionLinear [flux, Ts1 ,Ts2 ,L ,\[Phi]0:0] \\n The heat current \
+through a topological Josephson junction, within the linear \
+approximation.\>\""}], ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"JJunctionNonLinear", "::", "usage"}], " ", "=", " ", 
+   "\"\<JJunctionNonLinear [flux, Ts1, Ts2, L, \[Phi]0:0, rescale -> True \
+(False)] \\n The (non linear) heat current through a topological Josephson \
+junction.\>\""}], ";"}]}], "Input",
+ CellChangeTimes->{{3.7471312107260733`*^9, 3.747131238176132*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Normal probe", "Subsubsection",
+ CellChangeTimes->{{3.7471171044660845`*^9, 3.7471171064759583`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"JNIS", "::", "usage"}], " ", "=", " ", 
+   "\"\<JNIS[tempN, tempS, \[Gamma]:0, RTunnelProbe:1, rescale -> True] \\n \
+The heat current through an NIS tunnel junction.\>\""}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"JNProbe", "::", "usage"}], " ", "=", 
+   "\"\<JNProbe[flux, tempNProbe, tempJunction, L, \[Phi]0:0, RTunnelProbe:1, \
+rescale -> True (False)] \\n The heat current between a normal metal probe, \
+tunnel coupled to one side of a topological Josephson junction. The length is \
+expected in units of \[Xi]0 (which is itself rescaled by \[CapitalDelta]0). \
+Can be descaled using rescale -> False as the last argument, in this case \
+\[Phi]0 and RTunnelProbe must be provided.\>\""}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"JNProbeNoise", "::", "usage"}], "=", 
+   "\"\<JNProbe[flux, tempNProbe, tempJunction, L, \[Phi]0:0, V:0, \
+RTunnelProbe:1, rescale -> True (False) \\n The thermal noise of \
+JNProbe\>\""}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"JNProbeAssymetric", "::", "usage"}], " ", "=", " ", 
+   "\"\<JNProbeAssymetric.\>\""}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"JNProbeMin", "::", "usage"}], " ", "=", " ", 
+   "\"\<JNProbeMin.\>\""}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"JNProbePlus", "::", "usage"}], " ", "=", " ", 
+  "\"\<JNProbePlus.\>\""}]}], "Input",
+ CellChangeTimes->{{3.7335733388408194`*^9, 3.7335734714324284`*^9}, {
+   3.73373530568585*^9, 3.733735306874959*^9}, {3.733737031909034*^9, 
+   3.7337370655979524`*^9}, {3.7337407938883605`*^9, 3.733740884996323*^9}, {
+   3.7337413071863437`*^9, 3.733741374265449*^9}, {3.736684213231635*^9, 
+   3.7366842161549053`*^9}, {3.7367478288008437`*^9, 
+   3.7367478758940344`*^9}, {3.7367650942769113`*^9, 
+   3.7367651143093185`*^9}, {3.736768571038957*^9, 3.736768587874205*^9}, {
+   3.7367686516848907`*^9, 3.7367686553584847`*^9}, {3.7368342812254405`*^9, 
+   3.736834303057472*^9}, {3.737285605877036*^9, 3.7372856260352793`*^9}, {
+   3.7376947996389484`*^9, 3.737694861654853*^9}, {3.737978811737123*^9, 
+   3.737978868987422*^9}, {3.7379791568675346`*^9, 3.7379791571295705`*^9}, {
+   3.7421060504034386`*^9, 3.7421061227151065`*^9}, 3.742106176067461*^9, {
+   3.747117151576291*^9, 3.7471171737659993`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Graphene probe", "Subsubsection",
+ CellChangeTimes->{{3.74711712827606*^9, 3.747117130275957*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"JGProbe", "::", "usage"}], " ", "=", " ", 
+  "\"\<JGProbe [flux, tempNProbe, tempJunction, L, \[Phi]0:0, V:0, \
+RTunnelProbe:1, rescale -> True] \\n The heat current between a graphene \
+probe and the topological junction.\>\""}]], "Input",
+ CellChangeTimes->{{3.747117184005973*^9, 3.7471172480458035`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Rectification coefficient JNProbe", "Subsection",
+ CellChangeTimes->{{3.737373475552832*^9, 3.737373479193509*^9}, {
+  3.7373735170661907`*^9, 3.73737351934525*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"rectificationCoefficient", "::", "usage"}], " ", "=", " ", 
+  "\"\<rectificationCoefficient[flux_, TCold_, THot_, L_, \[Phi]0_:0] \\n The \
+rectification coefficient using JNProbe defined as \!\(\*SubscriptBox[\(J\), \
+\(forward\)]\)/\!\(\*SubscriptBox[\(J\), \(backward\)]\) with the NProbe at \
+THot and the topological junction at TCold and visa versa.\>\""}]], "Input",
+ CellChangeTimes->{{3.7373734830277143`*^9, 3.7373736177211256`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Rectification coefficient General", "Subsection",
+ CellChangeTimes->{{3.73789076287211*^9, 3.737890767209916*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"rectCoefficientRatio", "::", "usage"}], " ", "=", " ", 
+  "\"\<rectCoefficientRatio[f[..., T1, T2,...], T1, T2, THot, TCold] \\n The \
+rectification coefficient defined as -\!\(\*SubscriptBox[\(J\), \
+\(forward\)]\)/\!\(\*SubscriptBox[\(J\), \(backward\)]\). The first argument \
+is the expession for J that is to be used. The variables for temperature \
+(T1,T2) must be consistent!\>\""}]], "Input",
+ CellChangeTimes->{{3.737890774393729*^9, 3.737890908424572*^9}, {
+  3.7378925130910463`*^9, 3.737892589568922*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"rectCoefficientRelative", "::", "usage"}], " ", "=", " ", 
+  "\"\<rectCoefficientRelative[f[..., T1, T2,...],T1, T2 THot, TCold] \\n The \
+rectification coefficient defined as 100 (\!\(\*SubscriptBox[\(J\), \(forward\
+\)]\)-\!\(\*SubscriptBox[\(J\), \(backward\)]\))/\!\(\*SubscriptBox[\(J\), \
+\(backward\)]\). The first argument is the expession for J that is to be \
+used. The variables for temperature (T1,T2) must be consistent!\>\""}]], \
+"Input",
+ CellChangeTimes->{{3.7378911616549354`*^9, 3.737891204421034*^9}, 
+   3.7378923508379073`*^9, {3.7378926000375104`*^9, 3.737892610893406*^9}, {
+   3.737893698539605*^9, 3.7378937007395144`*^9}}],
+
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{3.7378911647087517`*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Begin the `Private context", "Section"],
+
+Cell[BoxData[
+ RowBox[{"Begin", "[", "\"\<`Private`\>\"", "]"}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell["Importing", "Subsection",
+ CellChangeTimes->{{3.733563954929648*^9, 3.7335639598500705`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"delta", "=", 
+    RowBox[{"Interpolation", "[", 
+     RowBox[{"Import", "[", 
+      RowBox[{
+      "\"\<G:\\\\My Drive\\\\PhD Pisa\\\\Calculations, Data and \
+Designs\\\\Wolfram Mathematica\\\\Auxi\\\\gapnew.dat\>\"", ",", 
+       "\"\<Table\>\""}], "]"}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"QephAl", "=", 
+   RowBox[{"Interpolation", "[", 
+    RowBox[{
+     RowBox[{"Import", "[", 
+      RowBox[{
+      "\"\<G:\\\\My Drive\\\\PhD Pisa\\\\Calculations, Data and \
+Designs\\\\Wolfram \
+Mathematica\\\\Auxi\\\\SuperElectronPhonon_Tc1.3K_gamma5x10^-4_Tbath25mK_mod.\
+dat\>\"", ",", "\"\<Table\>\""}], "]"}], ",", 
+     RowBox[{"InterpolationOrder", " ", "\[Rule]", "1"}]}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{
+  3.7334838999131327`*^9, {3.7498097097242393`*^9, 3.749809725914116*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Parameters", "Subsection",
+ CellChangeTimes->{{3.733485022095007*^9, 3.733485022979413*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"\[CapitalDelta]0", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Set\[CapitalDelta]0", " ", "[", "\[CapitalDelta]0in_", "]"}], ":=",
+    " ", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{"\[CapitalDelta]0", " ", "=", " ", "\[CapitalDelta]0in"}], 
+       ")"}], "  ", ";", "\[IndentingNewLine]", 
+      RowBox[{"Tc", " ", "=", " ", 
+       RowBox[{"\[CapitalDelta]0in", "/", 
+        RowBox[{"(", 
+         RowBox[{"fact", "*", "kB"}], ")"}]}]}]}]}], " ", 
+    RowBox[{"(*", 
+     RowBox[{
+     "Real", " ", "value", " ", "of", " ", "the", " ", "BCS", " ", "critical",
+       " ", "temperature"}], "*)"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Get\[CapitalDelta]0", "[", "]"}], ":=", "\[CapitalDelta]0"}], 
+   ";"}], "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"\[Gamma]", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Set\[Gamma]", "[", "\[Gamma]in_", "]"}], " ", ":=", " ", 
+   RowBox[{"(", 
+    RowBox[{"\[Gamma]", " ", "=", " ", "\[Gamma]in"}], ")"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"Get\[Gamma]", "[", "]"}], " ", ":=", " ", "\[Gamma]"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{"vF", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetvF", "[", "vFin_", "]"}], " ", ":=", " ", 
+   RowBox[{"(", 
+    RowBox[{"vF", " ", "=", " ", "vFin"}], ")"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"GetvF", "[", "]"}], " ", ":=", " ", "vF"}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GetTc", " ", ":=", " ", "Tc"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"RTunnelProbe", " ", ":=", " ", 
+   SuperscriptBox["10", "3"]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.733485024579149*^9, 3.733485065004675*^9}, {
+   3.7334851223878107`*^9, 3.733485128002117*^9}, {3.7334863993019304`*^9, 
+   3.73348640353345*^9}, {3.7334866205414944`*^9, 3.733486666086939*^9}, {
+   3.733486852836239*^9, 3.7334868560359173`*^9}, 3.7334869202286477`*^9, 
+   3.7334873687397146`*^9, 3.7335459661722217`*^9, 3.7335460372924027`*^9, 
+   3.7335462005017385`*^9, {3.7335463750738487`*^9, 3.7335463765583677`*^9}, {
+   3.7335464378169737`*^9, 3.7335464626177197`*^9}, {3.7335465595980887`*^9, 
+   3.7335465618602066`*^9}, {3.7335466039224787`*^9, 3.733546623784773*^9}, {
+   3.73355228701054*^9, 3.7335523509394875`*^9}, {3.7335530766795416`*^9, 
+   3.733553076727998*^9}, {3.7335543651888447`*^9, 3.733554392532796*^9}, {
+   3.7335732021392117`*^9, 3.733573217284092*^9}, {3.736685047171635*^9, 
+   3.7366851442489324`*^9}, {3.736742509834577*^9, 3.736742511329136*^9}}]
+}, Open  ]],
+
+Cell[TextData[StyleBox["Function definitions", "Section"]], "Subsection",
+ CellChangeTimes->{{3.733554297136465*^9, 3.733554297173519*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["General functions", "Subsection",
+ CellChangeTimes->{{3.747133339430676*^9, 3.747133342054974*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"fermi", "[", 
+    RowBox[{"energy_", ",", "T_"}], "]"}], ":=", " ", 
+   FractionBox["1", 
+    RowBox[{
+     RowBox[{"Exp", "[", 
+      FractionBox[
+       RowBox[{"fact", " ", "energy"}], 
+       RowBox[{" ", "T"}]], "]"}], "+", "1"}]]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Rho]Graphene", "[", "energy_", "]"}], ":=", " ", 
+    RowBox[{
+     FractionBox["2", "Pi"], 
+     FractionBox[
+      RowBox[{"Abs", "[", "energy", "]"}], 
+      SuperscriptBox[
+       RowBox[{"(", 
+        RowBox[{"h", " ", "*", " ", 
+         SuperscriptBox["10", "8"]}], ")"}], "2"]]}]}], ";"}], " ", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{"DoS", " ", "per", " ", 
+     SuperscriptBox["cm", 
+      RowBox[{"-", "2"}]], " ", "for", " ", "graphene"}], ",", " ", 
+    RowBox[{"degeneracy", " ", "of", " ", "4", " ", 
+     RowBox[{"included", ".", " ", "From"}], " ", "Katsnelson", " ", 
+     RowBox[{"(", "1.72", ")"}]}]}], " ", "*)"}]}]}], "Input",
+ CellChangeTimes->{{3.747133349446802*^9, 3.7471334298511553`*^9}, {
+  3.7471334665708323`*^9, 3.7471335645049424`*^9}, {3.747133605160378*^9, 
+  3.7471336803367248`*^9}, {3.747134439749881*^9, 3.7471344496519938`*^9}, {
+  3.747134480770138*^9, 3.7471344954189014`*^9}, {3.747134598792821*^9, 
+  3.7471346015866365`*^9}, {3.747134769520736*^9, 3.747134780990131*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["General superconductivity", "Subsection",
+ CellChangeTimes->{{3.733554306420066*^9, 3.733554312388666*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"MyFunction", "[", "x_", "]"}], ":=", "x"}], ";"}], "*)"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "Test", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"Test", "[", 
+     RowBox[{"x_", ",", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Print", "[", 
+     RowBox[{"\"\<option is set to: \>\"", ",", 
+      RowBox[{"OptionValue", "[", "rescale", "]"}]}], "]"}]}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{
+  3.733482343938952*^9, {3.733545579793224*^9, 3.733545596742762*^9}, {
+   3.733547285218519*^9, 3.73354737300118*^9}, 3.733547505361253*^9, {
+   3.733548927478842*^9, 3.7335489911781006`*^9}, {3.733549077883747*^9, 
+   3.7335491237079954`*^9}, {3.7335492653564243`*^9, 3.7335492693892756`*^9}, 
+   3.733550163136074*^9, 3.7922225883048496`*^9}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "\[CapitalDelta]", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"\[CapitalDelta]", "[", 
+     RowBox[{"T_", ",", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], " ", ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", "  ", "\[CapitalDelta]0"}]}], "]"}], 
+       ";", "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"delta", "[", "T", "]"}]}]}]}], "]"}]}], 
+   "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[Rho]QP", "[", 
+      RowBox[{"energy_", ",", "T_", ",", 
+       RowBox[{"\[Gamma]_:", "0"}]}], "]"}], ":=", 
+     RowBox[{"Abs", "[", 
+      RowBox[{"Re", "[", 
+       FractionBox[
+        RowBox[{"energy", "+", " ", 
+         RowBox[{"\[ImaginaryI]", " ", "\[Gamma]"}]}], 
+        SqrtBox[
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"(", 
+            RowBox[{"energy", "+", 
+             RowBox[{"\[ImaginaryI]", " ", "\[Gamma]"}]}], ")"}], "2"], "-", 
+          SuperscriptBox[
+           RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}]]], "  ", "]"}], 
+      "]"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.733484117040454*^9, 3.733484117793322*^9}, {
+   3.7334869826101356`*^9, 3.733487058909526*^9}, {3.733487193787413*^9, 
+   3.733487193903082*^9}, {3.7334872756838503`*^9, 3.7334873309097853`*^9}, {
+   3.7334873768166456`*^9, 3.7334873769013453`*^9}, {3.733487505418247*^9, 
+   3.733487531866531*^9}, 3.7334875910086136`*^9, 3.733546050545294*^9, {
+   3.7335493138625827`*^9, 3.733549349910086*^9}, {3.7335494081463485`*^9, 
+   3.7335494569014716`*^9}, {3.733549520775286*^9, 3.733549579213154*^9}, {
+   3.733549667926242*^9, 3.733549669909029*^9}, {3.733549734133881*^9, 
+   3.7335497764863024`*^9}, {3.733549891751122*^9, 3.7335498946624303`*^9}, 
+   3.7335499353977423`*^9, {3.73354998898952*^9, 3.7335499950479126`*^9}, {
+   3.733550034142522*^9, 3.73355003812914*^9}, 3.7335500853100863`*^9, {
+   3.7335501324734797`*^9, 3.7335501336451187`*^9}, {3.7335521629880095`*^9, 
+   3.733552164563821*^9}, {3.733552563734867*^9, 3.7335525768490405`*^9}, {
+   3.733552640658814*^9, 3.7335526580420647`*^9}, {3.7335644529094563`*^9, 
+   3.733564469365529*^9}, {3.733808978609214*^9, 3.7338089809086714`*^9}, {
+   3.737867563914027*^9, 3.737867568914549*^9}, 3.747133346853706*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["General thermal transport", "Subsection",
+ CellChangeTimes->{{3.7367491385556717`*^9, 3.7367491417420406`*^9}, {
+  3.7367622371302805`*^9, 3.7367622421711235`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{"Thermal", " ", "conductance", " ", "quantum"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"GQ", " ", "[", "T_", "]"}], ":=", "  ", 
+    RowBox[{
+     SuperscriptBox["Pi", "2"], " ", 
+     SuperscriptBox["kB", "2"], " ", "T", " ", 
+     RowBox[{"Tc", "/", " ", 
+      RowBox[{"(", 
+       RowBox[{"6", " ", "Pi", " ", "\[HBar]"}], ")"}]}]}]}], 
+   ";"}]}]], "Input",
+ CellChangeTimes->{{3.7367504468534155`*^9, 3.736750535097291*^9}, {
+  3.736750578925462*^9, 3.736750584818256*^9}, {3.736762317388813*^9, 
+  3.73676232880735*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "The", " ", "heatcurrent", " ", "through", " ", "a", " ", "NIS", " ", 
+     "junction"}], ",", " ", 
+    RowBox[{
+    "the", " ", "DoS", " ", "of", " ", "the", " ", "normal", " ", "metal", 
+     " ", "is", " ", "set", " ", "to", " ", "1"}]}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "JNIS", "]"}], "=", 
+    RowBox[{"{", 
+     RowBox[{"rescale", "\[Rule]", "True"}], "}"}]}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"JNIS", "[", 
+     RowBox[{"tempN_", ",", "tempS_", ",", 
+      RowBox[{"\[Gamma]_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           SuperscriptBox["\[CapitalDelta]0", "2"], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"NIntegrate", "[", " ", 
+         RowBox[{
+          RowBox[{"energy", " ", "*", " ", 
+           RowBox[{"\[Rho]QP", "[", 
+            RowBox[{"energy", ",", "tempS", ",", "\[Gamma]"}], "]"}], "*", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempN"}], "]"}], "-", 
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempS"}], "]"}]}], ")"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"\[CapitalDelta]", "[", "tempS", "]"}]}], ",", 
+            RowBox[{"\[CapitalDelta]", "[", "tempS", "]"}], ",", "10"}], 
+           "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "6"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}], ",", 
+          RowBox[{"WorkingPrecision", "\[Rule]", "MachinePrecision"}]}], 
+         "]"}]}]}]}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.737867335400091*^9, 3.737867512696436*^9}, {
+   3.7378675980393667`*^9, 3.7378676294014597`*^9}, {3.7378676852748384`*^9, 
+   3.7378676977136497`*^9}, {3.7378677332160063`*^9, 3.73786774118256*^9}, {
+   3.7379786950494657`*^9, 3.7379786974012203`*^9}, {3.7385743816933327`*^9, 
+   3.7385743831465917`*^9}, {3.7385744838739796`*^9, 3.738574485560153*^9}, {
+   3.738574923081373*^9, 3.738574942851089*^9}, 3.7385753403499794`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Topological Josephson Junction", "Subsection",
+ CellChangeTimes->{{3.7335543162883954`*^9, 3.7335543232741385`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"\"\<ps[flux,L] gives the finite Cooper pair momentum in response to \
+a magnetic flux penetrating the junction. Note that the width of the junction \
+is defined implicitly\>\"", ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"ps", "[", 
+     RowBox[{"flux_", ",", "L_"}], "]"}], ":=", 
+    RowBox[{"(*", " ", "\[CapitalDelta]0", " ", "*)"}], " ", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"Pi", "*", "\[HBar]"}], "L"], "*", "flux"}]}], ";"}], " ", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Finite", " ", "Cooper", " ", "pair", " ", "momentum"}], ",", " ",
+     "simplified"}], "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"energyMin", "[", 
+    RowBox[{"energy_", ",", "flux_", ",", "L_"}], "]"}], "  ", ":=", 
+   RowBox[{"(*", " ", "\[CapitalDelta]0", " ", "*)"}], 
+   RowBox[{"energy", "-", 
+    RowBox[{"vF", "*", 
+     RowBox[{
+      RowBox[{"ps", "[", 
+       RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"energyPlus", "[", 
+     RowBox[{"energy_", ",", "flux_", ",", "L_"}], "]"}], ":=", 
+    RowBox[{"(*", " ", "\[CapitalDelta]0", " ", "*)"}], 
+    RowBox[{"energy", "+", 
+     RowBox[{"vF", "*", 
+      RowBox[{
+       RowBox[{"ps", "[", 
+        RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}]}], ";"}], 
+  "\[IndentingNewLine]", "\[IndentingNewLine]", "\[IndentingNewLine]", 
+  "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "\[Rho]TJJ", " ", "does", " ", "not", " ", "contain", " ", "the", " ", 
+     "ABS"}], ",", " ", 
+    RowBox[{
+    "and", " ", "thus", " ", "cannot", " ", "be", " ", "used", " ", "to", " ",
+      "calculate", " ", "subgap", " ", "electronic", " ", "transport"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "*", 
+     RowBox[{"\[Xi]", "[", "T", "]"}], " ", "in", " ", "the", " ", "cosine", 
+     " ", "replaced", " ", "with", " ", "\[HBar]", " ", "vF"}], " ", 
+    "\[Rule]", " ", 
+    RowBox[{
+    "there", " ", "is", " ", "no", " ", "T", " ", "dependence", " ", "in", 
+     " ", "the", " ", "cosine"}]}], " ", "*)"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Rho]TJJ", "[", 
+     RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", 
+    RowBox[{
+     RowBox[{
+      FractionBox[
+       RowBox[{"Abs", "[", 
+        RowBox[{"energyMin", "[", 
+         RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "]"}], 
+       SqrtBox[
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"energyMin", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+         SuperscriptBox[
+          RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}]]], " ", 
+      RowBox[{"HeavisideTheta", "[", 
+       RowBox[{
+        RowBox[{"Abs", "[", 
+         RowBox[{"energyMin", "[", 
+          RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+         "\[IndentingNewLine]", "]"}], "-", 
+        RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"energyMin", "[", 
+            RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+          SuperscriptBox[
+           RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"energyMin", "[", 
+            RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+           SuperscriptBox[
+            RowBox[{"Cos", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"\[Phi]0", "+", 
+                 RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "-", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"energyMin", "[", 
+                  RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                 "L"}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+         ")"}]}], ")"}]}], "+", 
+     RowBox[{
+      FractionBox[
+       RowBox[{"Abs", "[", 
+        RowBox[{"energyPlus", "[", 
+         RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "]"}], 
+       SqrtBox[
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"energyPlus", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+         SuperscriptBox[
+          RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}]]], " ", 
+      RowBox[{"HeavisideTheta", "[", 
+       RowBox[{
+        RowBox[{"Abs", "[", 
+         RowBox[{"energyPlus", "[", 
+          RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+         "\[IndentingNewLine]", "]"}], "-", 
+        RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"energyPlus", "[", 
+            RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+          SuperscriptBox[
+           RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+        RowBox[{"(", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"energyPlus", "[", 
+            RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+           SuperscriptBox[
+            RowBox[{"Cos", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"\[Phi]0", "+", 
+                 RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "+", 
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"energyPlus", "[", 
+                  RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                 "L"}], ")"}], "/", 
+               RowBox[{"(", 
+                RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+         ")"}]}], ")"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.7335546147774057`*^9, 3.7335546244137506`*^9}, {
+   3.7335640083253403`*^9, 3.7335640115214443`*^9}, {3.7335642742687654`*^9, 
+   3.733564289789193*^9}, {3.733564395169829*^9, 3.733564447063016*^9}, {
+   3.733564617519523*^9, 3.7335646423505983`*^9}, {3.7335646769228163`*^9, 
+   3.7335647387084284`*^9}, 3.7335654378024077`*^9, {3.7335678076980352`*^9, 
+   3.733567813299144*^9}, {3.7335681183568273`*^9, 3.7335681303949623`*^9}, {
+   3.7335687170443764`*^9, 3.733568757971393*^9}, 3.73357039775632*^9, {
+   3.7335704359587173`*^9, 3.7335704410599957`*^9}, 3.7337355276423254`*^9}],
+
+Cell[CellGroupData[{
+
+Cell["Transmissions", "Subsubsection",
+ CellChangeTimes->{{3.7337355223572865`*^9, 3.7337355235488434`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "The", " ", "transmission", " ", "function", " ", "of", " ", "right"}], 
+     "-", 
+     RowBox[{"moving", " ", "particles"}]}], ",", " ", 
+    RowBox[{
+    "as", " ", "defined", " ", "by", " ", "Bj\[ODoubleDot]rn", " ", "in", " ",
+      "the", " ", "thermal", " ", "switch", " ", 
+     RowBox[{"paper", ".", " ", "The"}], " ", "temperature", " ", "of", " ", 
+     "the", " ", "junction", " ", "is", " ", "the", " ", "average", " ", "of",
+      " ", "the", " ", "two", " ", "temperatures", " ", "in", " ", "the", " ",
+      "linear", " ", 
+     RowBox[{"regime", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"transmissionTJJ", "[", 
+     RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", " ", 
+    RowBox[{
+     FractionBox["1", "2"], 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"transmissionTJJU", "[", 
+        RowBox[{"energy", ",", "flux", ",", "T", ",", "L", ",", "\[Phi]0"}], 
+        "]"}], "+", 
+       RowBox[{"transmissionTJJL", "[", 
+        RowBox[{"energy", ",", "flux", ",", "T", ",", "L", ",", "\[Phi]0"}], 
+        "]"}]}], ")"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.7337362864372025`*^9, 3.733736288703411*^9}, {
+  3.733736511005129*^9, 3.733736545945187*^9}, {3.7337410372482615`*^9, 
+  3.733741061967342*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{
+    "There", " ", "is", " ", "a", " ", "difference", " ", "between", " ", 
+     "the", " ", "two", " ", "transmission", " ", "functions", " ", "of", " ",
+      "the", " ", "upper", " ", 
+     RowBox[{"(", "U", ")"}], " ", "and", " ", "lower", " ", 
+     RowBox[{"(", "L", ")"}], " ", "edge", " ", "transmissions", " ", "only", 
+     " ", "when", " ", "\[Phi]0"}], " ", "\[NotEqual]", "0"}], "*)"}], 
+  "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"transmissionTJJU", "[", 
+      RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+       RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"HeavisideTheta", "[", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{"energyMin", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+          "\[IndentingNewLine]", "]"}], "-", 
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyMin", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyMin", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+            SuperscriptBox[
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Phi]0", "+", 
+                  RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "-", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"energyMin", "[", 
+                   RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                  "L"}], ")"}], "/", 
+                RowBox[{"(", 
+                 RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+          ")"}]}], ")"}]}], "+", " ", 
+      RowBox[{
+       RowBox[{"HeavisideTheta", "[", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{"energyPlus", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+          "\[IndentingNewLine]", "]"}], "-", 
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyPlus", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyPlus", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+            SuperscriptBox[
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Phi]0", "+", 
+                  RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "+", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"energyPlus", "[", 
+                   RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                  "L"}], ")"}], "/", 
+                RowBox[{"(", 
+                 RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+          ")"}]}], ")"}]}]}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"transmissionTJJL", "[", 
+      RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+       RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", " ", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"HeavisideTheta", "[", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{"energyMin", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+          "\[IndentingNewLine]", "]"}], "-", 
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyMin", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyMin", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+            SuperscriptBox[
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Phi]0", "-", 
+                  RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "+", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"energyMin", "[", 
+                   RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                  "L"}], ")"}], "/", 
+                RowBox[{"(", 
+                 RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+          ")"}]}], ")"}]}], "+", " ", 
+      RowBox[{
+       RowBox[{"HeavisideTheta", "[", 
+        RowBox[{
+         RowBox[{"Abs", "[", 
+          RowBox[{"energyPlus", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+          "\[IndentingNewLine]", "]"}], "-", 
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyPlus", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           SuperscriptBox[
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+         RowBox[{"(", 
+          RowBox[{
+           SuperscriptBox[
+            RowBox[{"energyPlus", "[", 
+             RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+           RowBox[{
+            SuperscriptBox[
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+            SuperscriptBox[
+             RowBox[{"Cos", "[", 
+              RowBox[{
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{"\[Phi]0", "-", 
+                  RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "-", 
+               RowBox[{
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"energyPlus", "[", 
+                   RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", 
+                  "L"}], ")"}], "/", 
+                RowBox[{"(", 
+                 RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+          ")"}]}], ")"}]}]}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{{3.7337355411656075`*^9, 3.7337355858050976`*^9}, {
+  3.7337364457166853`*^9, 3.733736489056035*^9}, {3.7337365436958447`*^9, 
+  3.733736600200883*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Heat currents into, and through the topological junction", "Subsection",
+ CellChangeTimes->{{3.7335725965643883`*^9, 3.7335725992465105`*^9}, {
+  3.7337352378311586`*^9, 3.7337352496052504`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["GNProbe", "Subsubsection",
+ CellChangeTimes->{{3.7468585918131833`*^9, 3.7468585966093955`*^9}, 
+   3.7471314709358*^9}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{"The", " ", "thermal", " ", "conductance", " ", 
+    RowBox[{"(", "G", ")"}], " ", "in", " ", "the", " ", "Linear", " ", 
+    "approxmiation"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "GNProbe", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"GNProbe", "[", 
+     RowBox[{"flux_", ",", "T_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", 
+      RowBox[{"V_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           SuperscriptBox["\[CapitalDelta]0", "2"], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe", " ", "Tc"}]]}]}], 
+        "]"}], ";", "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", " ", 
+        FractionBox["fact", "4"], " ", 
+        RowBox[{"NIntegrate", "[", " ", 
+         RowBox[{
+          RowBox[{
+           FractionBox[
+            SuperscriptBox["energy", "2"], 
+            SuperscriptBox["T", "2"]], " ", "*", " ", 
+           FractionBox[
+            RowBox[{"\[Rho]TJJ", "[", 
+             RowBox[{
+             "energy", ",", "flux", ",", "T", ",", "L", ",", "\[Phi]0"}], 
+             "]"}], 
+            SuperscriptBox[
+             RowBox[{"Cosh", "[", 
+              RowBox[{"fact", " ", 
+               RowBox[{"energy", "/", 
+                RowBox[{"(", 
+                 RowBox[{"2", "T"}], ")"}]}]}], "]"}], "2"]]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "+", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "-", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "-", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "+", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", "10"}], "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.746858601069044*^9, 3.7468586422991953`*^9}, {
+   3.7468591823727818`*^9, 3.7468591830077133`*^9}, 3.7468594409071364`*^9, {
+   3.746869781232073*^9, 3.7468698162711396`*^9}, {3.7468700450414753`*^9, 
+   3.746870047453101*^9}, {3.747114550848055*^9, 3.7471145518087873`*^9}, {
+   3.7471314631057205`*^9, 3.7471314669458957`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JNProbe", "Subsubsection",
+ CellChangeTimes->{{3.736747431542676*^9, 3.7367474398141203`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "The", " ", "heatcurrent", " ", "between", " ", "the", " ", "normal", " ",
+      "probe", " ", "and", " ", "the", " ", "S"}], "-", "TI", "-", 
+    RowBox[{"S", " ", "junction"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "JNProbe", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"JNProbe", "[", 
+     RowBox[{
+     "flux_", ",", "tempNProbe_", ",", "tempJunction_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", 
+      RowBox[{"V_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           SuperscriptBox["\[CapitalDelta]0", "2"], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"NIntegrate", "[", " ", 
+         RowBox[{
+          RowBox[{"energy", " ", "*", " ", 
+           RowBox[{"\[Rho]TJJ", "[", 
+            RowBox[{
+            "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+             "\[Phi]0"}], "]"}], "*", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempJunction"}], "]"}]}], ")"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", "10"}], "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}]}], "]"}]}]}]}], " ", "]"}]}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.736764959742779*^9, 3.7367649639741364`*^9}, 
+   3.7367650325183043`*^9, 3.7367652890265694`*^9, {3.7367685444716005`*^9, 
+   3.736768545637685*^9}, {3.736834075025901*^9, 3.7368340778320312`*^9}, {
+   3.73683419804347*^9, 3.736834208737712*^9}, {3.7368473197015944`*^9, 
+   3.7368473520879965`*^9}, {3.736847396842086*^9, 3.7368474169668846`*^9}, {
+   3.742105607507577*^9, 3.7421056105713854`*^9}, {3.74557316406332*^9, 
+   3.7455731682301097`*^9}, {3.7455737472486677`*^9, 3.745573761038808*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JNProbe noise", "Subsubsection",
+ CellChangeTimes->{{3.7421055536914616`*^9, 3.7421055560272183`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "The", " ", "thermal", " ", "noise", " ", "of", " ", "the", " ", 
+     "heatcurrent", " ", "between", " ", "the", " ", "normal", " ", "probe", 
+     " ", "and", " ", "the", " ", "S"}], "-", "TI", "-", 
+    RowBox[{"S", " ", "junction"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "JNProbeNoise", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"JNProbeNoise", "[", 
+     RowBox[{
+     "flux_", ",", "tempNProbe_", ",", "tempJunction_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", 
+      RowBox[{"V_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           RowBox[{"2", 
+            SuperscriptBox["\[CapitalDelta]0", "3"]}], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"NIntegrate", "[", " ", 
+         RowBox[{
+          RowBox[{
+           SuperscriptBox["energy", "2"], " ", "*", " ", 
+           RowBox[{"\[Rho]TJJ", "[", 
+            RowBox[{
+            "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+             "\[Phi]0"}], "]"}], "*", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"fermi", "[", 
+               RowBox[{"energy", ",", "tempNProbe"}], "]"}], 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"fermi", "[", 
+                 RowBox[{"energy", ",", "tempJunction"}], "]"}]}], ")"}]}], 
+             "+", 
+             RowBox[{
+              RowBox[{"fermi", "[", 
+               RowBox[{"energy", ",", "tempJunction"}], "]"}], 
+              RowBox[{"(", 
+               RowBox[{"1", "-", 
+                RowBox[{"fermi", "[", 
+                 RowBox[{"energy", ",", "tempNProbe"}], "]"}]}], ")"}]}]}], 
+            ")"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", "10"}], "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.742105570003848*^9, 3.742105575156073*^9}, {
+  3.7421057416306534`*^9, 3.7421057530600953`*^9}, {3.7421059847353153`*^9, 
+  3.7421060129635115`*^9}, {3.7421061600672393`*^9, 3.742106166227767*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JNProbe assymetric heating", "Subsubsection",
+ CellChangeTimes->{{3.737694741202935*^9, 3.73769475101647*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "\[Rho]TJJ", " ", "does", " ", "not", " ", "contain", " ", "the", " ", 
+     "ABS"}], ",", " ", 
+    RowBox[{
+    "and", " ", "thus", " ", "cannot", " ", "be", " ", "used", " ", "to", " ",
+      "calculate", " ", "subgap", " ", "electronic", " ", "transport"}]}], 
+   " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "*", 
+     RowBox[{"\[Xi]", "[", "T", "]"}], " ", "in", " ", "the", " ", "cosine", 
+     " ", "replaced", " ", "with", " ", "\[HBar]", " ", "vF"}], " ", 
+    "\[Rule]", " ", 
+    RowBox[{
+    "there", " ", "is", " ", "no", " ", "T", " ", "dependence", " ", "in", 
+     " ", "the", " ", "cosine"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"\[Rho]TJJMin", "[", 
+     RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", 
+    RowBox[{
+     FractionBox[
+      RowBox[{"Abs", "[", 
+       RowBox[{"energyMin", "[", 
+        RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "]"}], 
+      SqrtBox[
+       RowBox[{
+        SuperscriptBox[
+         RowBox[{"energyMin", "[", 
+          RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+        SuperscriptBox[
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}]]], " ", 
+     RowBox[{"HeavisideTheta", "[", 
+      RowBox[{
+       RowBox[{"Abs", "[", 
+        RowBox[{"energyMin", "[", 
+         RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+        "\[IndentingNewLine]", "]"}], "-", 
+       RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+     RowBox[{"(", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"energyMin", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+         SuperscriptBox[
+          RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+       RowBox[{"(", 
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"energyMin", "[", 
+           RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+         RowBox[{
+          SuperscriptBox[
+           RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+          SuperscriptBox[
+           RowBox[{"Cos", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{"\[Phi]0", "+", 
+                RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "-", 
+             RowBox[{
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"energyMin", "[", 
+                 RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", "L"}],
+                ")"}], "/", 
+              RowBox[{"(", 
+               RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+        ")"}]}], ")"}]}]}], ";"}]}]], "Input",
+ CellChangeTimes->{{3.7373745957130938`*^9, 3.7373746175296783`*^9}, {
+  3.7373746525848713`*^9, 3.737374692489955*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"\[Rho]TJJPlus", "[", 
+    RowBox[{"energy_", ",", "flux_", ",", "T_", ",", "L_", ",", 
+     RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", 
+   RowBox[{
+    FractionBox[
+     RowBox[{"Abs", "[", 
+      RowBox[{"energyPlus", "[", 
+       RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "]"}], 
+     SqrtBox[
+      RowBox[{
+       SuperscriptBox[
+        RowBox[{"energyPlus", "[", 
+         RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+       SuperscriptBox[
+        RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}]]], " ", 
+    RowBox[{"HeavisideTheta", "[", 
+     RowBox[{
+      RowBox[{"Abs", "[", 
+       RowBox[{"energyPlus", "[", 
+        RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], 
+       "\[IndentingNewLine]", "]"}], "-", 
+      RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], "]"}], "*", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"(", 
+       RowBox[{
+        SuperscriptBox[
+         RowBox[{"energyPlus", "[", 
+          RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+        SuperscriptBox[
+         RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"]}], ")"}], "/", 
+      RowBox[{"(", 
+       RowBox[{
+        SuperscriptBox[
+         RowBox[{"energyPlus", "[", 
+          RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "2"], "-", 
+        RowBox[{
+         SuperscriptBox[
+          RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "2"], 
+         SuperscriptBox[
+          RowBox[{"Cos", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"\[Phi]0", "+", 
+               RowBox[{"Pi", "*", "flux"}]}], ")"}], "/", "2"}], "+", 
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"energyPlus", "[", 
+                RowBox[{"energy", ",", "flux", ",", "L"}], "]"}], "*", "L"}], 
+              ")"}], "/", 
+             RowBox[{"(", 
+              RowBox[{"\[HBar]", " ", "vF"}], ")"}]}]}], "]"}], "2"]}]}], 
+       ")"}]}], ")"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{{3.7373746369533143`*^9, 3.737374639368738*^9}, {
+  3.7373747067368336`*^9, 3.737374727704494*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+     RowBox[{
+     "The", " ", "heatcurrent", " ", "between", " ", "the", " ", "normal", 
+      " ", "probe", " ", "and", " ", "the", " ", "S"}], "-", "TI", "-", 
+     RowBox[{"S", " ", "junction"}]}], ",", " ", 
+    RowBox[{
+    "where", " ", "the", " ", "two", " ", "superconducting", " ", "leads", 
+     " ", "can", " ", "reside", " ", "at", " ", "different", " ", 
+     RowBox[{"temperatures", ".", " ", "tempJunction"}]}], ",", " ", 
+    RowBox[{
+    "that", " ", "defines", " ", "the", " ", "gap", " ", "in", " ", "the", 
+     " ", "edge", " ", "channels"}], ",", " ", 
+    RowBox[{
+    "is", " ", "taken", " ", "to", " ", "be", " ", "the", " ", "average", " ",
+      "of", " ", "the", " ", "two", " ", "superconductor", " ", 
+     RowBox[{"temperatures", "."}]}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"Options", "[", "JNProbeAssymetric", "]"}], " ", "=", " ", 
+     RowBox[{"{", 
+      RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], ";"}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"JNProbeAssymetric", "[", 
+     RowBox[{
+     "flux_", ",", "tempNProbe_", ",", "tempS1_", ",", "tempS2_", ",", "L_", 
+      ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"tempJunction", "=", 
+         FractionBox[
+          RowBox[{"tempS1", "+", "tempS2"}], "2"]}], ",", "prefactor"}], 
+       "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           SuperscriptBox["\[CapitalDelta]0", "2"], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"NIntegrate", "[", " ", 
+           RowBox[{
+            RowBox[{"energy", " ", "*", " ", 
+             RowBox[{"\[Rho]TJJMin", "[", 
+              RowBox[{
+              "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+               "\[Phi]0"}], "]"}], "*", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"fermi", "[", 
+                RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+               RowBox[{"fermi", "[", 
+                RowBox[{"energy", ",", "tempS1"}], "]"}]}], ")"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"energy", ",", 
+              RowBox[{"-", "10"}], ",", 
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+                 RowBox[{"vF", "*", 
+                  RowBox[{
+                   RowBox[{"ps", "[", 
+                    RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], 
+                ")"}]}], ",", 
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+                 RowBox[{"vF", "*", 
+                  RowBox[{
+                   RowBox[{"ps", "[", 
+                    RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], 
+                ")"}]}], ",", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+                RowBox[{"vF", "*", 
+                 RowBox[{
+                  RowBox[{"ps", "[", 
+                   RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+              ",", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+                RowBox[{"vF", "*", 
+                 RowBox[{
+                  RowBox[{"ps", "[", 
+                   RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+              ",", "10"}], "}"}], ",", " ", 
+            RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+            RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+            RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+            RowBox[{"Method", "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"\"\<Oscillatory\>\"", ",", 
+               RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+              "}"}]}]}], "]"}], " ", "\[IndentingNewLine]", "+", 
+          RowBox[{"NIntegrate", "[", " ", 
+           RowBox[{
+            RowBox[{"energy", " ", "*", " ", 
+             RowBox[{"\[Rho]TJJPlus", "[", 
+              RowBox[{
+              "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+               "\[Phi]0"}], "]"}], "*", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"fermi", "[", 
+                RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+               RowBox[{"fermi", "[", 
+                RowBox[{"energy", ",", "tempS2"}], "]"}]}], ")"}]}], ",", 
+            RowBox[{"{", 
+             RowBox[{"energy", ",", 
+              RowBox[{"-", "10"}], ",", 
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+                 RowBox[{"vF", "*", 
+                  RowBox[{
+                   RowBox[{"ps", "[", 
+                    RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], 
+                ")"}]}], ",", 
+              RowBox[{"-", 
+               RowBox[{"(", 
+                RowBox[{
+                 RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+                 RowBox[{"vF", "*", 
+                  RowBox[{
+                   RowBox[{"ps", "[", 
+                    RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], 
+                ")"}]}], ",", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+                RowBox[{"vF", "*", 
+                 RowBox[{
+                  RowBox[{"ps", "[", 
+                   RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+              ",", 
+              RowBox[{"(", 
+               RowBox[{
+                RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+                RowBox[{"vF", "*", 
+                 RowBox[{
+                  RowBox[{"ps", "[", 
+                   RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+              ",", "10"}], "}"}], ",", " ", 
+            RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+            RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+            RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+            RowBox[{"Method", "\[Rule]", 
+             RowBox[{"{", 
+              RowBox[{"\"\<Oscillatory\>\"", ",", 
+               RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+              "}"}]}]}], "]"}]}], " ", ")"}]}]}]}], "]"}]}], 
+   "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.736764959742779*^9, 3.7367649639741364`*^9}, 
+   3.7367650325183043`*^9, 3.7367652890265694`*^9, {3.7367685444716005`*^9, 
+   3.736768545637685*^9}, {3.736834075025901*^9, 3.7368340778320312`*^9}, {
+   3.73683419804347*^9, 3.736834208737712*^9}, {3.7368473197015944`*^9, 
+   3.7368473520879965`*^9}, {3.736847396842086*^9, 3.7368474169668846`*^9}, {
+   3.73737419896937*^9, 3.737374229608823*^9}, {3.7373743317633963`*^9, 
+   3.737374333226286*^9}, {3.7376935484175153`*^9, 3.7376937257764916`*^9}, {
+   3.737693758197713*^9, 3.7376937994354*^9}, 3.737694297795537*^9, {
+   3.7376953835666785`*^9, 3.7376954338006473`*^9}, 3.737697837018332*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "JNProbeMin", "]"}], " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"JNProbeMin", "[", 
+   RowBox[{
+   "flux_", ",", "tempNProbe_", ",", "tempS1_", ",", "tempS2_", ",", "L_", 
+    ",", 
+    RowBox[{"\[Phi]0_:", "0"}], ",", 
+    RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"tempJunction", "=", 
+       FractionBox[
+        RowBox[{"tempS1", "+", "tempS2"}], "2"]}], ",", "prefactor"}], "}"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", " ", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", 
+        FractionBox[
+         SuperscriptBox["\[CapitalDelta]0", "2"], 
+         RowBox[{
+          SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"prefactor", "*", 
+      RowBox[{"NIntegrate", "[", " ", 
+       RowBox[{
+        RowBox[{"energy", " ", "*", " ", 
+         RowBox[{"\[Rho]TJJMin", "[", 
+          RowBox[{
+          "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+           "\[Phi]0"}], "]"}], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"fermi", "[", 
+            RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+           RowBox[{"fermi", "[", 
+            RowBox[{"energy", ",", "tempS1"}], "]"}]}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"energy", ",", 
+          RowBox[{"-", "10"}], ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          "10"}], "}"}], ",", " ", 
+        RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+        RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+        RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+        RowBox[{"Method", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Oscillatory\>\"", ",", 
+           RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+          "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7376941598029976`*^9, 3.737694203699834*^9}, 
+   3.737694296154698*^9, 3.737695390051742*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "JNProbePlus", "]"}], " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"JNProbePlus", "[", 
+   RowBox[{
+   "flux_", ",", "tempNProbe_", ",", "tempS1_", ",", "tempS2_", ",", "L_", 
+    ",", 
+    RowBox[{"\[Phi]0_:", "0"}], ",", 
+    RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+      RowBox[{"tempJunction", "=", 
+       FractionBox[
+        RowBox[{"tempS1", "+", "tempS2"}], "2"]}], ",", "prefactor"}], "}"}], 
+    ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", " ", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", 
+        FractionBox[
+         SuperscriptBox["\[CapitalDelta]0", "2"], 
+         RowBox[{
+          SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"prefactor", "*", 
+      RowBox[{"NIntegrate", "[", " ", 
+       RowBox[{
+        RowBox[{"energy", " ", "*", " ", 
+         RowBox[{"\[Rho]TJJPlus", "[", 
+          RowBox[{
+          "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+           "\[Phi]0"}], "]"}], "*", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"fermi", "[", 
+            RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+           RowBox[{"fermi", "[", 
+            RowBox[{"energy", ",", "tempS2"}], "]"}]}], ")"}]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"energy", ",", 
+          RowBox[{"-", "10"}], ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          "10"}], "}"}], ",", " ", 
+        RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+        RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+        RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+        RowBox[{"Method", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Oscillatory\>\"", ",", 
+           RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+          "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.737694211794473*^9, 3.7376942503042545`*^9}, 
+   3.7376942947483206`*^9, 3.737695279125352*^9, 3.7376953913892474`*^9}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["thermalConductanceTJJ", "Subsubsection",
+ CellChangeTimes->{{3.736747453822255*^9, 3.736747459406952*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "The", " ", "thermal", " ", "conductance", " ", "and", " ", "heat", " ", 
+    "current", " ", "in", " ", "the", " ", "linear", " ", "approximation", 
+    " ", "as", " ", "in", " ", "the", " ", "topological", " ", "heat", " ", 
+    "switch", " ", "paper", " ", "of", " ", "Bj\[ODoubleDot]rn", " ", 
+    "Sothmann", " ", 
+    RowBox[{"(", 
+     RowBox[{
+     "note", " ", "that", " ", "in", " ", "the", " ", "paper", " ", "T", " ", 
+      "should", " ", "be", " ", 
+      RowBox[{"T", "^", "2"}]}], ")"}]}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "thermalConductanceTJJ", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"thermalConductanceTJJ", "[", 
+     RowBox[{"flux_", ",", "T_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], " ", ":=", "  ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           RowBox[{" ", 
+            SuperscriptBox["\[CapitalDelta]0", "2"]}], 
+           RowBox[{"h", " ", "Tc"}]]}]}], "]"}], ";", "\[IndentingNewLine]", 
+       " ", 
+       RowBox[{"prefactor", "*", 
+        FractionBox["fact", "4"], "*", 
+        RowBox[{"NIntegrate", "[", 
+         RowBox[{
+          RowBox[{
+           SuperscriptBox["energy", "2"], " ", 
+           RowBox[{
+            RowBox[{"transmissionTJJ", "[", 
+             RowBox[{
+             "energy", ",", "flux", ",", "T", ",", "L", ",", "\[Phi]0"}], 
+             "]"}], "/", 
+            RowBox[{"(", " ", 
+             RowBox[{
+              SuperscriptBox["T", "2"], " ", 
+              RowBox[{
+               RowBox[{"Cosh", "[", 
+                RowBox[{"fact", "*", 
+                 RowBox[{"energy", "/", 
+                  RowBox[{"(", 
+                   RowBox[{"2", "T"}], ")"}]}]}], "]"}], "^", "2"}]}], 
+             ")"}]}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", "10"}], "}"}], ",", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "5"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "10"}], ",", 
+          RowBox[{"Method", "\[Rule]", "Oscillatory"}]}], "]"}]}]}]}], 
+     "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7335726674123673`*^9, 3.7335727303226185`*^9}, {
+   3.7335727756958485`*^9, 3.733572781910757*^9}, {3.7335729245549517`*^9, 
+   3.733573067945436*^9}, 3.7335731454927936`*^9, {3.733734981783345*^9, 
+   3.7337349818654933`*^9}, {3.7337350899808345`*^9, 
+   3.7337350911259527`*^9}, {3.733735219502675*^9, 3.7337352201189356`*^9}, {
+   3.7337353041780405`*^9, 3.733735308979909*^9}, {3.73373544823928*^9, 
+   3.7337354794728284`*^9}, {3.733736896458452*^9, 3.7337369440583773`*^9}, {
+   3.733736977467224*^9, 3.733736992018633*^9}, 3.7337373453195477`*^9, {
+   3.73373782792707*^9, 3.7337378280714307`*^9}, {3.733737860603371*^9, 
+   3.733737861332076*^9}, {3.733740729770713*^9, 3.7337407760501223`*^9}, {
+   3.733740903640298*^9, 3.7337410016859884`*^9}, {3.7337410719793625`*^9, 
+   3.7337410821776237`*^9}, {3.7337411167917185`*^9, 
+   3.7337411727736597`*^9}, {3.736683580658103*^9, 3.7366836843684816`*^9}, {
+   3.736683768005774*^9, 3.736683779645381*^9}, {3.736683927244212*^9, 
+   3.7366839330101132`*^9}, {3.73668396432486*^9, 3.736683990642527*^9}, {
+   3.7366840220963683`*^9, 3.7366840479277797`*^9}, {3.736684933140828*^9, 
+   3.7366849354620647`*^9}, {3.7367425537455697`*^9, 
+   3.7367425629450345`*^9}, {3.7367444157112193`*^9, 3.7367444243692837`*^9}, 
+   3.7367452409205008`*^9, {3.7367474433532195`*^9, 3.7367475181580667`*^9}, {
+   3.7468691134137106`*^9, 3.7468691137577405`*^9}, {3.746869454242297*^9, 
+   3.7468694558029284`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JJunctionLinear", "Subsubsection",
+ CellChangeTimes->{{3.7367474734214416`*^9, 3.7367474758463383`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"JJunctionLinear", "[", 
+    RowBox[{"flux_", ",", "Ts1_", ",", "Ts2_", ",", "L_", ",", 
+     RowBox[{"\[Phi]0_:", "0"}]}], "]"}], ":=", " ", 
+   RowBox[{
+    RowBox[{"thermalConductanceTJJ", "[", 
+     RowBox[{"flux", ",", 
+      RowBox[{
+       RowBox[{"(", 
+        RowBox[{"Ts1", "+", "Ts2"}], ")"}], "/", "2"}], ",", "L", ",", 
+      "\[Phi]0"}], "]"}], 
+    RowBox[{"(", 
+     RowBox[{"Ts1", "-", "Ts2"}], ")"}]}]}], ";"}]], "Input",
+ CellChangeTimes->{3.736747502062681*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JJunctionNonLinear", "Subsubsection",
+ CellChangeTimes->{{3.7367474786378107`*^9, 3.7367474841893897`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "The", " ", "full", " ", "heat", " ", "current", " ", "throught", " ", 
+     "the", " ", "topological", " ", 
+     RowBox[{"junction", ".", " ", "The"}], " ", "temperature", " ", "of", 
+     " ", "the", " ", "junction", " ", "TJunction", " ", "is", " ", "used", 
+     " ", "to", " ", "determine", " ", "the", " ", "gap", " ", "in", " ", 
+     "the", " ", "junction", " ", 
+     RowBox[{"\[CapitalDelta]", "[", "T", "]"}]}], ",", " ", 
+    RowBox[{"and", " ", "for", " ", "nothing", " ", 
+     RowBox[{"else", "."}]}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "JJunctionNonLinear", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"JJunctionNonLinear", "[", 
+      RowBox[{"flux_", ",", "Ts1_", ",", "Ts2_", ",", "L_", ",", 
+       RowBox[{"\[Phi]0_:", "0"}], ",", 
+       RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+     RowBox[{"Module", "[", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"TJunction", " ", "=", " ", 
+          RowBox[{
+           RowBox[{"(", 
+            RowBox[{"Ts1", "+", "Ts2"}], ")"}], "/", "2"}]}], ",", " ", 
+         "prefactor"}], "}"}], ",", "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"If", "[", " ", 
+         RowBox[{
+          RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+          RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+          RowBox[{"prefactor", " ", "=", " ", 
+           FractionBox[
+            RowBox[{" ", 
+             SuperscriptBox["\[CapitalDelta]0", "2"]}], 
+            RowBox[{"h", " "}]]}]}], "]"}], ";", 
+        RowBox[{"NIntegrate", "[", 
+         RowBox[{
+          RowBox[{"energy", " ", 
+           RowBox[{"transmissionTJJ", "[", 
+            RowBox[{
+            "energy", ",", "flux", ",", "TJunction", ",", "L", ",", 
+             "\[Phi]0"}], "]"}], " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "Ts1"}], "]"}], "-", 
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "Ts2"}], "]"}]}], ")"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "TJunction", "]"}], "+", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "TJunction", "]"}], "-", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "TJunction", "]"}], "-", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "TJunction", "]"}], "+", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", "10"}], "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}]}], "]"}]}]}], "]"}]}], ";"}]}]}]], "Input",
+ CellChangeTimes->{
+  3.7371839739428406`*^9, {3.7371840490729074`*^9, 3.737184082224351*^9}, 
+   3.7372852458864107`*^9, {3.7372853445636687`*^9, 3.7372854501179266`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["GGProbe", "Subsubsection",
+ CellChangeTimes->{{3.747130497836925*^9, 3.7471305179309263`*^9}, 
+   3.747131501966014*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{
+   "The", " ", "thermal", " ", "conductance", " ", "between", " ", "a", " ", 
+    "graphene", " ", "probe", " ", "and", " ", "S"}], "-", "TI", "-", 
+   RowBox[{
+   "S", " ", "junction", " ", "in", " ", "the", " ", "linear", " ", 
+    "approximation"}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.7471305076070695`*^9, 3.7471305464757013`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"Options", "[", "GGProbe", "]"}], " ", "=", " ", 
+  RowBox[{"{", 
+   RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], 
+   "}"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"GGProbe", "[", 
+   RowBox[{"flux_", ",", "T_", ",", "L_", ",", 
+    RowBox[{"\[Phi]0_:", "0"}], ",", 
+    RowBox[{"V_:", "0"}], ",", 
+    RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+    RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"If", "[", " ", 
+      RowBox[{
+       RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+       RowBox[{"prefactor", " ", "=", " ", 
+        FractionBox[
+         SuperscriptBox["\[CapitalDelta]0", "2"], 
+         RowBox[{
+          SuperscriptBox["q", "2"], " ", "RTunnelProbe", " ", "Tc"}]]}]}], 
+      "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"prefactor", "*", " ", 
+      FractionBox["fact", "4"], " ", 
+      RowBox[{"NIntegrate", "[", " ", 
+       RowBox[{
+        RowBox[{
+         FractionBox[
+          SuperscriptBox["energy", "2"], 
+          SuperscriptBox["T", "2"]], " ", "*", " ", 
+         FractionBox[
+          RowBox[{
+           RowBox[{"\[Rho]TJJ", "[", 
+            RowBox[{
+            "energy", ",", "flux", ",", "T", ",", "L", ",", "\[Phi]0"}], 
+            "]"}], "*", " ", 
+           RowBox[{"Abs", "[", "energy", "]"}]}], 
+          SuperscriptBox[
+           RowBox[{"Cosh", "[", 
+            RowBox[{"fact", " ", 
+             RowBox[{"energy", "/", 
+              RowBox[{"(", 
+               RowBox[{"2", "T"}], ")"}]}]}], "]"}], "2"]]}], ",", 
+        RowBox[{"{", 
+         RowBox[{"energy", ",", 
+          RowBox[{"-", "10"}], ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "+", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"-", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "-", 
+             RowBox[{"vF", "*", 
+              RowBox[{
+               RowBox[{"ps", "[", 
+                RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+          ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "-", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          RowBox[{"(", 
+           RowBox[{
+            RowBox[{"\[CapitalDelta]", "[", "T", "]"}], "+", 
+            RowBox[{"vF", "*", 
+             RowBox[{
+              RowBox[{"ps", "[", 
+               RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], ",", 
+          "10"}], "}"}], ",", " ", 
+        RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+        RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+        RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+        RowBox[{"Method", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{"\"\<Oscillatory\>\"", ",", 
+           RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+          "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7471305618059764`*^9, 3.747130565447029*^9}, {
+   3.74713060389679*^9, 3.7471306051870975`*^9}, {3.747131504065756*^9, 
+   3.7471315067150187`*^9}, 3.7471319785089636`*^9, {3.747132494433859*^9, 
+   3.7471324965031567`*^9}, {3.747132730179267*^9, 3.74713273264974*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["JGProbe", "Subsubsection",
+ CellChangeTimes->{{3.7471145739589105`*^9, 3.7471145788789635`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+    RowBox[{
+    "The", " ", "heatcurrent", " ", "between", " ", "a", " ", "graphene", " ",
+      "probe", " ", "and", " ", "the", " ", "S"}], "-", "TI", "-", 
+    RowBox[{"S", " ", "junction"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"Options", "[", "JGProbe", "]"}], " ", "=", " ", 
+    RowBox[{"{", 
+     RowBox[{"rescale", " ", "\[Rule]", " ", "True"}], "}"}]}], 
+   "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"JGProbe", "[", 
+     RowBox[{
+     "flux_", ",", "tempNProbe_", ",", "tempJunction_", ",", "L_", ",", 
+      RowBox[{"\[Phi]0_:", "0"}], ",", 
+      RowBox[{"V_:", "0"}], ",", 
+      RowBox[{"RTunnelProbe_:", "1"}], ",", " ", 
+      RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", " ", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", "prefactor", "}"}], ",", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"If", "[", " ", 
+        RowBox[{
+         RowBox[{"OptionValue", "[", "rescale", "]"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", "1"}], ",", 
+         RowBox[{"prefactor", " ", "=", " ", 
+          FractionBox[
+           SuperscriptBox["\[CapitalDelta]0", "2"], 
+           RowBox[{
+            SuperscriptBox["q", "2"], " ", "RTunnelProbe"}]]}]}], "]"}], ";", 
+       "\[IndentingNewLine]", 
+       RowBox[{"prefactor", "*", 
+        RowBox[{"NIntegrate", "[", " ", 
+         RowBox[{
+          RowBox[{
+           SuperscriptBox["energy", 
+            RowBox[{"2", " "}]], " ", "*", " ", "energy", " ", 
+           RowBox[{"(*", 
+            RowBox[{"Graphene", " ", "dos"}], "*)"}], " ", "*", " ", 
+           RowBox[{"\[Rho]TJJ", "[", 
+            RowBox[{
+            "energy", ",", "flux", ",", "tempJunction", ",", "L", ",", 
+             "\[Phi]0"}], "]"}], "*", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempNProbe"}], "]"}], "-", 
+             RowBox[{"fermi", "[", 
+              RowBox[{"energy", ",", "tempJunction"}], "]"}]}], ")"}]}], ",", 
+          RowBox[{"{", 
+           RowBox[{"energy", ",", 
+            RowBox[{"-", "10"}], ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"-", 
+             RowBox[{"(", 
+              RowBox[{
+               RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+               RowBox[{"vF", "*", 
+                RowBox[{
+                 RowBox[{"ps", "[", 
+                  RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}]}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "-", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", 
+            RowBox[{"(", 
+             RowBox[{
+              RowBox[{"\[CapitalDelta]", "[", "tempJunction", "]"}], "+", 
+              RowBox[{"vF", "*", 
+               RowBox[{
+                RowBox[{"ps", "[", 
+                 RowBox[{"flux", ",", "L"}], "]"}], "/", "2"}]}]}], ")"}], 
+            ",", "10"}], "}"}], ",", " ", 
+          RowBox[{"MaxRecursion", "\[Rule]", "25"}], ",", 
+          RowBox[{"MinRecursion", "\[Rule]", "3"}], ",", 
+          RowBox[{"AccuracyGoal", "\[Rule]", "4"}], ",", " ", 
+          RowBox[{"Method", "\[Rule]", 
+           RowBox[{"{", 
+            RowBox[{"\"\<Oscillatory\>\"", ",", 
+             RowBox[{"\"\<SymbolicProcessing\>\"", "\[Rule]", "False"}]}], 
+            "}"}]}]}], "]"}]}]}]}], " ", "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.7471145943489294`*^9, 3.7471146056587734`*^9}, {
+  3.747114650659067*^9, 3.7471146557986584`*^9}, {3.747114837858836*^9, 
+  3.747114857718731*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Rectification Coefficients", "Subsection",
+ CellChangeTimes->{{3.737373446954677*^9, 3.7373734523691964`*^9}, 
+   3.7378907224937243`*^9}],
+
+Cell[BoxData[
+ RowBox[{"(*", "  ", 
+  RowBox[{
+   RowBox[{"Following", " ", "the", " ", "definition", " ", "from", " ", 
+    RowBox[{"doi", ":", 
+     RowBox[{
+      RowBox[{"10.1038", "/", "nnano"}], ".2015", ".11"}]}]}], ",", " ", 
+   RowBox[{"with", " ", 
+    SubscriptBox["J", "forward"], " ", "corresponding", " ", "to", " ", "a", 
+    " ", "hot", " ", "normal", " ", "metal", " ", 
+    RowBox[{"probe", ".", " ", "RTunnelProbe"}], " ", "cancels", " ", 
+    "out"}]}], " ", "*)"}]], "Input",
+ CellChangeTimes->{{3.7367672494889565`*^9, 3.7367673012155747`*^9}, {
+  3.736768812079997*^9, 3.736768838519588*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"rectificationCoefficient", "[", 
+   RowBox[{"flux_", ",", "TCold_", ",", "THot_", ",", "L_", ",", 
+    RowBox[{"\[Phi]0_:", "0"}]}], "]"}], " ", ":=", " ", 
+  FractionBox[
+   RowBox[{"-", 
+    RowBox[{"JNProbe", "[", 
+     RowBox[{"flux", ",", "TCold", ",", "THot", ",", "L", ",", "\[Phi]0"}], 
+     "]"}]}], 
+   RowBox[{"JNProbe", "[", 
+    RowBox[{"flux", ",", "THot", ",", "TCold", ",", "L", ",", "\[Phi]0"}], 
+    "]"}]]}]], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{
+  3.733806493240302*^9, {3.7338065865386496`*^9, 3.733806693627634*^9}, {
+   3.736767166859497*^9, 3.7367672437645493`*^9}, {3.736767607533532*^9, 
+   3.7367676208076134`*^9}, {3.7367681169733315`*^9, 
+   3.7367681224293814`*^9}, {3.736768338182461*^9, 3.7367683628529606`*^9}, {
+   3.7367687465201178`*^9, 3.7367687467978916`*^9}, {3.7367687835727654`*^9, 
+   3.736768798879246*^9}, {3.736850425576354*^9, 3.7368504585037413`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"SetAttributes", "[", 
+  RowBox[{"rectCoefficientRatio", ",", "HoldFirst"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rectCoefficientRatio", "[", 
+    RowBox[{"f_", ",", "T1_", ",", "T2_", ",", "THot_", ",", "TCold_"}], 
+    "]"}], ":=", 
+   RowBox[{"Re", "[", 
+    RowBox[{"ReleaseHold", "[", 
+     FractionBox[
+      RowBox[{
+       RowBox[{"-", 
+        RowBox[{"Hold", "[", "f", "]"}]}], "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"T1", "\[Rule]", "THot"}], ",", 
+         RowBox[{"T2", "\[Rule]", "TCold"}]}], "}"}]}], 
+      RowBox[{
+       RowBox[{"Hold", "[", "f", "]"}], "/.", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"T1", "\[Rule]", "TCold"}], ",", 
+         RowBox[{"T2", "\[Rule]", "THot"}]}], "}"}]}]], "]"}], "]"}]}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.7378687876728525`*^9, 3.7378688318784513`*^9}, {
+  3.737868951238098*^9, 3.7378689560198517`*^9}, {3.7378690942127466`*^9, 
+  3.73786909552658*^9}, {3.7378692529903083`*^9, 3.73786933598919*^9}, {
+  3.7378899450258627`*^9, 3.7378899454575157`*^9}, {3.737889988772951*^9, 
+  3.737890029990733*^9}, {3.7378902298423347`*^9, 3.737890237762745*^9}, {
+  3.7378903052919846`*^9, 3.737890309938522*^9}, {3.7378903407610474`*^9, 
+  3.737890355991927*^9}, {3.7378904335399203`*^9, 3.7378904564604235`*^9}, {
+  3.737890680709238*^9, 3.737890681124819*^9}, {3.7378921728077145`*^9, 
+  3.737892239807104*^9}, {3.737892280323126*^9, 3.7378923206943703`*^9}, {
+  3.7378924173380585`*^9, 3.7378924205716066`*^9}, {3.7385770331666784`*^9, 
+  3.7385770539679303`*^9}, {3.7385770906866055`*^9, 3.738577097111844*^9}}],
+
+Cell[BoxData[{
+ RowBox[{"SetAttributes", "[", 
+  RowBox[{"rectCoefficientRelative", ",", "HoldFirst"}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"rectCoefficientRelative", "[", 
+    RowBox[{"f_", ",", "T1_", ",", "T2_", ",", "THot_", ",", "TCold_"}], 
+    "]"}], ":=", 
+   RowBox[{"Re", "[", 
+    RowBox[{"ReleaseHold", "[", 
+     RowBox[{"100", " ", 
+      FractionBox[
+       RowBox[{
+        RowBox[{"Abs", "[", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Hold", "[", "f", "]"}], "/.", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"T1", "\[Rule]", "THot"}], ",", 
+             RowBox[{"T2", "\[Rule]", "TCold"}]}], "}"}]}], ")"}], "]"}], "-", 
+        RowBox[{"Abs", "[", 
+         RowBox[{"(", 
+          RowBox[{
+           RowBox[{"Hold", "[", "f", "]"}], "/.", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"T1", "\[Rule]", "TCold"}], ",", 
+             RowBox[{"T2", "\[Rule]", "THot"}]}], "}"}]}], ")"}], "]"}]}], 
+       RowBox[{"Abs", "[", 
+        RowBox[{
+         RowBox[{"Hold", "[", "f", "]"}], "/.", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"T1", "\[Rule]", "TCold"}], ",", 
+           RowBox[{"T2", "\[Rule]", "THot"}]}], "}"}]}], "]"}]]}], "]"}], 
+    "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.73789099475595*^9, 3.7378909966248336`*^9}, {
+   3.737891103793914*^9, 3.7378911476248336`*^9}, {3.7379753252452836`*^9, 
+   3.7379753296988306`*^9}, {3.737977026205254*^9, 3.7379770301587834`*^9}, {
+   3.738577099814599*^9, 3.738577102454404*^9}, {3.7504979601147175`*^9, 
+   3.7504979827983985`*^9}, {3.7504982686065483`*^9, 
+   3.7504982761526203`*^9}, {3.7504985741552944`*^9, 3.7504985952685385`*^9}, 
+   3.750498714606877*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["End the `Private context", "Section"],
+
+Cell[BoxData[
+ RowBox[{"End", "[", "]"}]], "Input"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["End the package context", "Section"],
+
+Cell[BoxData[
+ RowBox[{"EndPackage", "[", "]"}]], "Input"]
+}, Open  ]]
+}, Open  ]]
+},
+AutoGeneratedPackage->Automatic,
+WindowSize->{854, 997},
+WindowMargins->{{Automatic, 34}, {Automatic, 0}},
+FrontEndVersion->"10.2 for Microsoft Windows (64-bit) (July 7, 2015)",
+StyleDefinitions->Notebook[{
+   Cell[
+    StyleData[StyleDefinitions -> "Default.nb"]], 
+   Cell[
+    StyleData["Code"], PageWidth -> WindowWidth, AutoIndent -> Automatic, 
+    AutoSpacing -> True, LineBreakWithin -> Automatic, LineIndent -> 1, 
+    LinebreakAdjustments -> {0.85, 2, 10, 0, 1}], 
+   Cell[
+    StyleData["Input"], InitializationCell -> True]}, Visible -> False, 
+  FrontEndVersion -> "10.2 for Microsoft Windows (64-bit) (July 7, 2015)", 
+  StyleDefinitions -> "PrivateStylesheetFormatting.nb"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 63, 1, 101, "Title"],
+Cell[CellGroupData[{
+Cell[668, 27, 92, 1, 70, "Section"],
+Cell[763, 30, 562, 12, 125, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1362, 47, 36, 0, 70, "Section"],
+Cell[1401, 49, 85, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[1511, 54, 159, 2, 49, "Subsection"],
+Cell[1673, 58, 2176, 54, 182, "Input"],
+Cell[CellGroupData[{
+Cell[3874, 116, 127, 1, 39, "Subsubsection"],
+Cell[4004, 119, 453, 12, 72, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4506, 137, 94, 1, 59, "Subsection"],
+Cell[4603, 140, 427, 13, 52, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5067, 158, 100, 1, 49, "Subsection"],
+Cell[5170, 161, 2267, 56, 232, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7474, 222, 109, 1, 49, "Subsection"],
+Cell[7586, 225, 621, 12, 92, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8244, 242, 117, 1, 49, "Subsection"],
+Cell[8364, 245, 631, 15, 72, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9032, 265, 170, 2, 49, "Subsection"],
+Cell[9205, 269, 341, 6, 72, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9583, 280, 120, 1, 49, "Subsection"],
+Cell[9706, 283, 842, 14, 112, "Input"],
+Cell[CellGroupData[{
+Cell[10573, 301, 108, 1, 39, "Subsubsection"],
+Cell[10684, 304, 1577, 28, 372, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[12310, 338, 164, 2, 49, "Subsection"],
+Cell[12477, 342, 482, 8, 72, "Input"],
+Cell[12962, 352, 402, 7, 72, "Input"],
+Cell[13367, 361, 374, 7, 92, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13778, 373, 103, 1, 49, "Subsection"],
+Cell[CellGroupData[{
+Cell[13906, 378, 186, 2, 39, "Subsubsection"],
+Cell[14095, 382, 675, 14, 152, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14807, 401, 107, 1, 39, "Subsubsection"],
+Cell[14917, 404, 2459, 47, 432, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17413, 456, 104, 1, 39, "Subsubsection"],
+Cell[17520, 459, 343, 6, 92, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[17912, 471, 171, 2, 49, "Subsection"],
+Cell[18086, 475, 478, 7, 92, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[18601, 487, 120, 1, 49, "Subsection"],
+Cell[18724, 490, 552, 9, 112, "Input"],
+Cell[19279, 501, 684, 11, 112, "Input"],
+Cell[19966, 514, 70, 1, 31, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[20085, 521, 45, 0, 70, "Section"],
+Cell[20133, 523, 74, 1, 31, "Input"],
+Cell[CellGroupData[{
+Cell[20232, 528, 99, 1, 49, "Subsection"],
+Cell[20334, 531, 897, 24, 252, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[21268, 560, 98, 1, 49, "Subsection"],
+Cell[21369, 563, 2841, 66, 332, "Input"]
+}, Open  ]],
+Cell[24225, 632, 139, 1, 59, "Subsection"],
+Cell[CellGroupData[{
+Cell[24389, 637, 105, 1, 41, "Subsection"],
+Cell[24497, 640, 1393, 36, 142, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[25927, 681, 113, 1, 49, "Subsection"],
+Cell[26043, 684, 1054, 26, 112, "Input"],
+Cell[27100, 712, 2870, 60, 252, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[30007, 777, 170, 2, 49, "Subsection"],
+Cell[30180, 781, 611, 17, 52, "Input"],
+Cell[30794, 800, 3072, 70, 241, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[33903, 875, 122, 1, 49, "Subsection"],
+Cell[34028, 878, 7045, 179, 687, "Input"],
+Cell[CellGroupData[{
+Cell[41098, 1061, 108, 1, 70, "Subsubsection"],
+Cell[41209, 1064, 1426, 34, 70, "Input"],
+Cell[42638, 1100, 7418, 191, 70, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[50105, 1297, 201, 2, 70, "Subsection"],
+Cell[CellGroupData[{
+Cell[50331, 1303, 126, 2, 70, "Subsubsection"],
+Cell[50460, 1307, 4148, 101, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[54645, 1413, 100, 1, 70, "Subsubsection"],
+Cell[54748, 1416, 4339, 102, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[59124, 1523, 108, 1, 70, "Subsubsection"],
+Cell[59235, 1526, 4569, 112, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[63841, 1643, 116, 1, 70, "Subsubsection"],
+Cell[63960, 1646, 3008, 79, 70, "Input"],
+Cell[66971, 1727, 2155, 59, 70, "Input"],
+Cell[69129, 1788, 7930, 182, 70, "Input"],
+Cell[77062, 1972, 3573, 93, 70, "Input"],
+Cell[80638, 2067, 3602, 93, 70, "Input"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[84277, 2165, 112, 1, 70, "Subsubsection"],
+Cell[84392, 2168, 4181, 88, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[88610, 2261, 110, 1, 70, "Subsubsection"],
+Cell[88723, 2264, 527, 15, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[89287, 2284, 113, 1, 70, "Subsubsection"],
+Cell[89403, 2287, 4313, 105, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[93753, 2397, 126, 2, 70, "Subsubsection"],
+Cell[93882, 2401, 405, 9, 70, "Input"],
+Cell[94290, 2412, 3745, 95, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[98072, 2512, 102, 1, 70, "Subsubsection"],
+Cell[98177, 2515, 4132, 101, 70, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[102358, 2622, 144, 2, 70, "Subsection"],
+Cell[102505, 2626, 615, 13, 70, "Input"],
+Cell[103123, 2641, 952, 20, 70, "Input",
+ InitializationCell->True],
+Cell[104078, 2663, 1659, 36, 70, "Input"],
+Cell[105740, 2701, 1762, 44, 70, "Input"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[107551, 2751, 43, 0, 70, "Section"],
+Cell[107597, 2753, 51, 1, 70, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[107685, 2759, 42, 0, 70, "Section"],
+Cell[107730, 2761, 58, 1, 70, "Input"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
