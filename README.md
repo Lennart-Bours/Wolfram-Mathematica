@@ -1,4 +1,6 @@
 # Wolfram-Mathematica
+
+##Overview
 A collection of Wolfram Mathematica notebooks and packages I wrote and used during my PhD thesis
 
 Files 1, 2 and 3 were used for the computational modelling of electronic and thermal transport through superconductor - 2 dimensional insulator - superconductor junctions (also known as topological Josephson junctions or TJJs) based devices. Parts of the code shared here was used to calculate the results presented in these two scientific papers:
@@ -23,3 +25,5 @@ and
 
 ``Electrostatic field-driven supercurrent suppression in ionic-gated metallic Josephson nanotransistors'', by Federico Paolucci, Francesco Crisà, Giorgio De Simoni, Lennart Bours, Claudio Puglia, Elia Strambini, Stefano Roddaro, Francesco Giazotto
 Prepublished on arXiv on 5 July 2021: arXiv:2107.00935 
+
+# 1. SuperPackage
