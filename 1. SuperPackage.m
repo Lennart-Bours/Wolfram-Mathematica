@@ -36,10 +36,6 @@ fact=1.0\[Pi]/Exp[EulerGamma];(* When normalizing E by \[CapitalDelta]0 and T by
 \[CapitalSigma]Cu = 2 * 10^9;
 
 
-(*MyFunction::usage="MyFunction[x] is a function that does something.";*)
-Test::usage = "a test function";
-
-
 Set\[CapitalDelta]0::usage="Set the real value of the gap.";
 Get\[CapitalDelta]0::usage="Gives the real value of the gap.";
 
@@ -144,15 +140,6 @@ fermi[energy_,T_]:= 1/(Exp[(fact energy)/ T]+1);
 \[Rho]Graphene[energy_]:= 2/Pi Abs[energy]/(h * 10^8)^2; (* DoS per cm^-2 for graphene, degeneracy of 4 included. From Katsnelson (1.72) *)
 
 
-(*MyFunction[x_]:=x;*)
-
-Options[Test] = {rescale -> True}
-Test[x_,OptionsPattern[]]:= Print["option is set to: ",OptionValue[rescale]]
-
-
-
-
-
 Options[\[CapitalDelta]] = {rescale -> True}
 \[CapitalDelta][T_,OptionsPattern[]]:= Module[{prefactor},
 
@@ -178,8 +165,6 @@ prefactor*NIntegrate[ energy * \[Rho]QP[energy,tempS,\[Gamma]]*(fermi[energy,tem
 ps[flux_,L_]:=(* \[CapitalDelta]0 *) (Pi*\[HBar])/L*flux; (*Finite Cooper pair momentum, simplified*)
 energyMin[energy_,flux_,L_]  :=(* \[CapitalDelta]0 *)energy-vF*ps[flux,L]/2;
 energyPlus[energy_,flux_,L_]:=(* \[CapitalDelta]0 *)energy+vF*ps[flux,L]/2;
-
-
 
 (* \[Rho]TJJ does not contain the ABS, and thus cannot be used to calculate subgap electronic transport *)
 (* \[CapitalDelta][T]*\[Xi][T] in the cosine replaced with \[HBar] vF \[Rule] there is no T dependence in the cosine *)
